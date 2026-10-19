@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>队员2 · SNMP 采集 | 网巡卫士学习资料</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <div class="logo"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+      <div><b>网巡卫士</b><span>NetGuard Patrol</span></div>
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="打开菜单">☰</button>
+    <nav class="menu" id="menu">
+      <a href="index.html">总览</a>
+      <a href="common.html">公共基础</a>
+      <a href="member1.html">组长·算法</a>
+      <a href="member2.html">SNMP采集</a>
+      <a href="member3.html">Flask后端</a>
+      <a href="member4.html">ECharts看板</a>
+      <a href="resources.html">资源速查</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <div class="crumb">
+    <a href="index.html">总览</a>
+    <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+    <span>队员2 · SNMP 采集</span>
+  </div>
+
+  <div class="page-hero ph-m2">
+    <div class="ph-top">
+      <div class="ph-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18"/></svg></div>
+      <div>
+        <h1>队员2 · SNMP 采集</h1>
+        <div class="ph-sub">10-12 Hours · 全组最重 · 要提前开工</div>
+      </div>
+    </div>
+    <p class="ph-desc">pysnmp 7.x 采集脚本；树莓派 snmpd 配置；OID 配置文件。学到什么程度：<b style="color:#fff">能独立读到一个 OID 的值</b>。</p>
+    <div class="ph-meta">
+      <span class="chip">时间预算 <b>10-12 小时</b></span>
+      <span class="chip">产出 <b>snmp_collector.py</b></span>
+      <span class="chip">产出 <b>oid_config.json</b></span>
+      <span class="chip">产出 <b>抓包记录（全是 GET）</b></span>
+    </div>
+  </div>
+
+  <div class="callout danger" style="margin-top:20px"><span class="ct">🔥 你的工作量全组最重</span>建议提前开工。<b>树莓派还没到货时，用 snmpsim 就能开发调试，别浪费时间等快递。</b>你主讲：SNMP 协议原理、采集实现、双数据源设计。</div>
+
+  <nav class="anchor-nav">
+    <a href="#s1">一、SNMP 协议基础</a>
+    <a href="#s2">二、命令行验证</a>
+    <a href="#s3">三、snmpsim 模拟器</a>
+    <a href="#s4">四、pysnmp 7.x API</a>
+    <a href="#s5">五、树莓派 snmpd</a>
+    <a href="#s6">六、OID 配置文件</a>
+    <a href="#s7">七、学习路径</a>
+    <a href="#s8">八、答辩要点</a>
+  </nav>
+
+  <!-- 1 -->
+  <section class="block" id="s1">
+    <div class="sec-head">
+      <div class="sec-num">01</div>
+      <div>
+        <h2>SNMP 协议基础（先看这个，2-3 小时）</h2>
+        <p><b style="color:#fff">不看协议直接抄代码，后面排障会完全懵。</b></p>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>必须掌握的（自查清单）</h3>
+        <ul class="check-list">
+          <li>报文交互流程：NMS 发 GET → agent 回 Response，UDP 161 端口</li>
+          <li>OID 树结构：<code class="inline">iso(1) → org(3) → dod(6) → internet(1) → mgmt(2) → mib-2(1)</code></li>
+          <li>community 团体名 = 密码（默认 <code class="inline">public</code>），SNMPv2c 明文传输无认证</li>
+          <li>GET vs WALK vs GETBULK 的区别和适用场景</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></span>你要看的资料</h3>
+        <div class="links">
+          <a class="link" href="https://calmops.com/network/snmp-protocol-network-management" target="_blank" rel="noopener"><span class="badge b-article">图文</span><span class="t">SNMP 完整图文指南（含 Python 代码，质量很高）</span></a>
+          <a class="link" href="http://www.net-snmp.org/docs/" target="_blank" rel="noopener"><span class="badge b-official">官方</span><span class="t">Net-SNMP 官方文档</span></a>
+        </div>
+        <p style="margin-top:14px">B 站搜索：<code class="inline">SNMP协议 详解</code> · <code class="inline">SNMP 原理 通俗</code> · <code class="inline">网络管理 SNMP MIB OID</code></p>
+        <p style="margin-top:6px">推荐找 30 分钟以上的完整原理课，重点看 GET/WALK 报文交互动画。也搜 <code class="inline">SNMP 教程 菜鸟</code>。</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 9v11"/></svg></span>你项目要用的 OID（记住这几个就够）</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>OID</th><th>含义</th></tr></thead>
+          <tbody>
+            <tr><td><code>1.3.6.1.2.1.1.1.0</code></td><td>sysDescr 设备描述</td></tr>
+            <tr><td><code>1.3.6.1.2.1.1.3.0</code></td><td>sysUpTime 运行时长</td></tr>
+            <tr><td><code>1.3.6.1.2.1.1.5.0</code></td><td>sysName 设备名</td></tr>
+            <tr><td><code>1.3.6.1.2.1.2.2.1.10</code></td><td><b style="color:#fff">ifInOctets 入站流量</b> ← 核心数据</td></tr>
+            <tr><td><code>1.3.6.1.2.1.2.2.1.16</code></td><td><b style="color:#fff">ifOutOctets 出站流量</b> ← 核心数据</td></tr>
+            <tr><td><code>1.3.6.1.2.1.2.2.1.8</code></td><td>ifOperStatus 网口状态（1=up）</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="block" id="s2">
+    <div class="sec-head">
+      <div class="sec-num">02</div>
+      <div>
+        <h2>命令行验证（1 小时，动手）</h2>
+        <p><b style="color:#fff">先会用命令行，再写 Python。命令行通了，Python 就有参照。</b></p>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+<pre><code><span class="cm"># Ubuntu / 树莓派装工具</span>
+sudo apt install snmp -y
+
+<span class="cm"># 读单个 OID（这是答辩要现场演示的动作！）</span>
+snmpget -v 2c -c public 192.168.1.10 .1.3.6.1.2.1.1.5.0
+
+<span class="cm"># 走整棵 system 子树</span>
+snmpwalk -v 2c -c public 192.168.1.10 .1.3.6.1.2.1.1
+
+<span class="cm"># 走所有网口的入站流量（项目核心数据）</span>
+snmpwalk -v 2c -c public 192.168.1.10 .1.3.6.1.2.1.2.2.1.10
+
+<span class="cm"># 离线本地测试（没设备时）</span>
+snmpwalk -v 2c -c public localhost .1.3.6.1.2.1.1</code></pre>
+      </div>
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M2 12h20M12 2v20"/><circle cx="12" cy="12" r="9"/></svg></span>抓包验证</h3>
+        <p>文档要求产出"抓包记录，全是 GET"。</p>
+        <div class="links">
+          <a class="link" href="https://www.wireshark.org/" target="_blank" rel="noopener"><span class="badge b-tool">工具</span><span class="t">Wireshark 官网</span></a>
+        </div>
+        <p style="margin-top:12px">抓包过滤器填 <code class="inline">snmp</code>，然后跑上面几条命令，看报文里的 <code class="inline">GetRequest</code> / <code class="inline">GetNextRequest</code>。</p>
+        <p style="margin-top:12px">B 站搜索：<code class="inline">Wireshark 抓包 入门</code> · <code class="inline">Wireshark 过滤 snmp</code></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="block" id="s3">
+    <div class="sec-head">
+      <div class="sec-num">03</div>
+      <div>
+        <h2>snmpsim 模拟器（第 0 天就能开工，不用等树莓派！）</h2>
+        <p>树莓派还没到货时，用 snmpsim 就能开发调试，别浪费时间等快递。</p>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+<pre><code>pip install snmpsim
+
+<span class="cm"># 用公共数据启动模拟器</span>
+snmpsim-command-responder --data-dir=./data --agent-udpv4-endpoint=127.0.0.1:1161
+
+<span class="cm"># 另开一个终端测试</span>
+snmpget -v 2c -c public 127.0.0.1:1161 .1.3.6.1.2.1.1.3.0</code></pre>
+        <div class="callout warn" style="margin-top:14px"><span class="ct">⚠️ 注意端口</span>端口用 <b>1161</b>（非特权端口），161 需要 root 权限。</div>
+      </div>
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></span>你要看的资料</h3>
+        <div class="links">
+          <a class="link" href="https://www.pysnmp.com/snmpsim/" target="_blank" rel="noopener"><span class="badge b-official">官方</span><span class="t">snmpsim 官方文档</span></a>
+          <a class="link" href="https://github.com/lextudio/snmpsim" target="_blank" rel="noopener"><span class="badge b-tool">GitHub</span><span class="t">snmpsim GitHub（含示例数据）</span></a>
+        </div>
+        <p style="margin-top:12px">B 站搜索：<code class="inline">snmpsim SNMP模拟器</code>（资源较少，主要看官方文档）</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="block" id="s4">
+    <div class="sec-head">
+      <div class="sec-num">04</div>
+      <div>
+        <h2>pysnmp 7.x async API（核心，4-5 小时）</h2>
+      </div>
+    </div>
+
+    <div class="callout danger"><span class="ct">🚨 最大的坑</span>pysnmp 7.x 和网上 4.x 教程写法完全不同！7.x 用 asyncio 重写了，<b>网上 90% 的中文教程还是 4.x 老写法，直接抄必然跑不起来</b>。以官方文档为准。</div>
+
+    <div class="grid g2" style="margin-top:16px">
+      <div class="card">
+        <p style="font-weight:600;color:#cfe2ff;font-size:13.5px;margin-bottom:4px">① GET 单个 OID</p>
+<pre><code><span class="kw">import</span> asyncio
+<span class="kw">from</span> pysnmp.hlapi.v3arch.asyncio <span class="kw">import</span> (
+    SnmpEngine, CommunityData, UdpTransportTarget,
+    ContextData, ObjectType, ObjectIdentity, get_cmd, bulk_cmd
+)
+
+<span class="kw">async def</span> <span class="fn">main</span>():
+    errorIndication, errorStatus, errorIndex, varBinds = <span class="kw">await</span> <span class="fn">get_cmd</span>(
+        <span class="fn">SnmpEngine</span>(),
+        <span class="fn">CommunityData</span>(<span class="st">'public'</span>, mpModel=<span class="nm">1</span>),          <span class="cm"># mpModel=1 → v2c</span>
+        <span class="kw">await</span> <span class="fn">UdpTransportTarget.create</span>((<span class="st">'192.168.1.10'</span>, <span class="nm">161</span>)),
+        <span class="fn">ContextData</span>(),
+        <span class="fn">ObjectType</span>(<span class="fn">ObjectIdentity</span>(<span class="st">'1.3.6.1.2.1.1.5.0'</span>))
+    )
+    <span class="kw">if</span> errorIndication:
+        <span class="fn">print</span>(<span class="st">'传输错误:'</span>, errorIndication)
+    <span class="kw">elif</span> errorStatus:
+        <span class="fn">print</span>(<span class="st">'SNMP错误:'</span>, errorStatus.<span class="fn">prettyPrint</span>())
+    <span class="kw">else</span>:
+        <span class="kw">for</span> name, val <span class="kw">in</span> varBinds:
+            <span class="fn">print</span>(<span class="st">f'{name.prettyPrint()} = {val.prettyPrint()}'</span>)
+
+asyncio.<span class="fn">run</span>(<span class="fn">main</span>())</code></pre>
+      </div>
+      <div class="card">
+        <p style="font-weight:600;color:#cfe2ff;font-size:13.5px;margin-bottom:4px">② GETBULK 高效走表</p>
+<pre><code><span class="cm"># 读所有网口流量，性能远好于逐条 getnext</span>
+<span class="kw">async for</span> errorIndication, errorStatus, errorIndex, varBinds <span class="kw">in</span> <span class="fn">bulk_cmd</span>(
+    <span class="fn">SnmpEngine</span>(),
+    <span class="fn">CommunityData</span>(<span class="st">'public'</span>, mpModel=<span class="nm">1</span>),
+    <span class="kw">await</span> <span class="fn">UdpTransportTarget.create</span>((<span class="st">'192.168.1.10'</span>, <span class="nm">161</span>)),
+    <span class="fn">ContextData</span>(),
+    <span class="nm">0</span>, <span class="nm">25</span>,                     <span class="cm"># non-repeaters, max-repetitions</span>
+    <span class="fn">ObjectType</span>(<span class="fn">ObjectIdentity</span>(<span class="st">'1.3.6.1.2.1.2.2.1.10'</span>)),
+    lexicographicMode=<span class="kw">False</span>        <span class="cm"># ⚠️ 关键！否则一直走到 MIB 末尾</span>
+):
+    <span class="kw">if</span> errorIndication <span class="kw">or</span> errorStatus:
+        <span class="kw">break</span>
+    <span class="kw">for</span> name, val <span class="kw">in</span> varBinds:
+        <span class="fn">print</span>(<span class="st">f'{name.prettyPrint()} = {val.prettyPrint()}'</span>)</code></pre>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/></svg></span>7.x API 的 4 个关键差异（4.x 用户必看）</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>项目</th><th>4.x 老写法</th><th>7.x 新写法</th></tr></thead>
+          <tbody>
+            <tr><td>导入路径</td><td><code>from pysnmp.hlapi import *</code></td><td><code>from pysnmp.hlapi.v3arch.asyncio import *</code></td></tr>
+            <tr><td>调用方式</td><td><code>next(getCmd(...))</code></td><td><code>await get_cmd(...)</code></td></tr>
+            <tr><td>传输目标</td><td><code>UdpTransportTarget((ip, 161))</code></td><td><code>await UdpTransportTarget.create((ip, 161))</code></td></tr>
+            <tr><td>引擎释放</td><td>不用管</td><td><b>记得 <code>engine.close_dispatcher()</code></b></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid g2" style="margin-top:16px">
+        <div>
+          <h3 class="sub"><span class="ic"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></span>官方资料（首选）</h3>
+          <div class="links">
+            <a class="link" href="https://pysnmp.com/" target="_blank" rel="noopener"><span class="badge b-official">官网</span><span class="t">PySNMP 7 官网</span></a>
+            <a class="link" href="https://www.pysnmp.com/pysnmp/docs/pysnmp-hlapi-tutorial" target="_blank" rel="noopener"><span class="badge b-official">⭐ 首选</span><span class="t">高层 API 教程（asyncio）</span></a>
+            <a class="link" href="https://www.pysnmp.com/pysnmp/docs/" target="_blank" rel="noopener"><span class="badge b-official">文档</span><span class="t">PySNMP 库文档</span></a>
+            <a class="link" href="https://github.com/lextudio/pysnmp" target="_blank" rel="noopener"><span class="badge b-tool">GitHub</span><span class="t">PySNMP GitHub（examples 目录最重要）</span></a>
+            <a class="link" href="https://snmp-monitoring.info/guides/python-polling" target="_blank" rel="noopener"><span class="badge b-article">实战</span><span class="t">实用 pysnmp 轮询指南（含 v3 和表格遍历）</span></a>
+          </div>
+        </div>
+        <div>
+          <h3 class="sub"><span class="ic"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>自查</h3>
+          <ul class="check-list">
+            <li>能独立写出 GET 读一个 OID，并正确处理 <code class="inline">errorIndication</code> / <code class="inline">errorStatus</code> / <code class="inline">varBinds</code> 三个返回通道</li>
+            <li>能遍历所有网口拿到 <code class="inline">ifInOctets</code> 列表</li>
+            <li>知道 <code class="inline">lexicographicMode=False</code> 是干什么的（防止遍历跑飞）</li>
+            <li>知道流量是<b>累计计数器</b>，要算实时速率必须用<b>前后两次差值 ÷ 时间间隔</b>（这点答辩可能被问）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="block" id="s5">
+    <div class="sec-head">
+      <div class="sec-num">05</div>
+      <div>
+        <h2>树莓派 snmpd 配置（2 小时）</h2>
+        <p>目标：把树莓派变成"真实的 SNMP 设备"，让电脑能 snmpget 到它。</p>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+<pre><code><span class="cm"># 1. 装 snmpd</span>
+sudo apt update &amp;&amp; sudo apt install snmpd snmp -y
+
+<span class="cm"># 2. 备份原配置</span>
+sudo cp /etc/snmp/snmpd.conf /etc/snmp/snmpd.conf.bak
+
+<span class="cm"># 3. 编辑配置</span>
+sudo nano /etc/snmp/snmpd.conf</code></pre>
+        <p style="margin-top:12px"><b style="color:#fff">关键配置项：</b></p>
+<pre><code><span class="cm"># 监听所有网卡（默认只监听 127.0.0.1，这是最常见的坑！）</span>
+agentAddress udp:161
+
+<span class="cm"># 只读团体名（生产环境别用 public）</span>
+rocommunity public default
+
+<span class="cm"># 允许整个网段访问（按需改）</span>
+rocommunity public 192.168.1.0/24
+
+sysLocation  <span class="st">"实验室"</span>
+sysContact  <span class="st">"你的邮箱"</span></code></pre>
+<pre><code><span class="cm"># 4. 重启并设为开机自启</span>
+sudo systemctl restart snmpd
+sudo systemctl enable snmpd
+
+<span class="cm"># 5. 本地验证</span>
+snmpwalk -v 2c -c public localhost .1.3.6.1.2.1.1</code></pre>
+        <div class="links" style="margin-top:12px">
+          <a class="link" href="https://alotofservers.com/?p=8140" target="_blank" rel="noopener"><span class="badge b-article">英文</span><span class="t">树莓派 SNMP 配置完整指南（步骤清晰）</span></a>
+          <a class="link" href="https://www.pingtesti.com/en/blog/raspberry-pi-snmp-monitoring" target="_blank" rel="noopener"><span class="badge b-article">英文</span><span class="t">树莓派 SNMP 监控配置</span></a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg></span>🚨 排障清单（答辩现场可能被要求"现场排障"）</h3>
+        <div class="tbl-wrap">
+          <table style="min-width:auto">
+            <thead><tr><th>现象</th><th>排查方向</th></tr></thead>
+            <tbody>
+              <tr><td><code>Timeout</code> 无响应</td><td>① 树莓派 IP 对不对 ② 两台机器在同网段吗 ③ <code>agentAddress</code> 是否监听 0.0.0.0</td></tr>
+              <tr><td><code>Timeout</code> 但本地能通</td><td>防火墙挡了：<code>sudo ufw allow 161/udp</code></td></tr>
+              <tr><td><code>No Such Object</code></td><td>OID 写错了 / 前面少了点 / 结尾少了 <code>.0</code></td></tr>
+              <tr><td>团体名错误</td><td>默认是 <code>public</code>；改了配置别忘了重启 snmpd</td></tr>
+              <tr><td>刚改完配置不生效</td><td><code>sudo systemctl restart snmpd</code>，或 <code>sudo systemctl status snmpd</code> 看报错</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin-top:12px">B 站搜索：<code class="inline">树莓派 snmpd 配置</code> · <code class="inline">树莓派 SNMP 监控</code></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="block" id="s6">
+    <div class="sec-head">
+      <div class="sec-num">06</div>
+      <div>
+        <h2>OID 配置文件设计（oid_config.json）</h2>
+        <p>答辩要讲"配置驱动"的设计思想。</p>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+<pre><code>{
+  <span class="st">"devices"</span>: [
+    {
+      <span class="st">"name"</span>: <span class="st">"raspberrypi-4b"</span>,
+      <span class="st">"ip"</span>: <span class="st">"192.168.1.10"</span>,
+      <span class="st">"port"</span>: <span class="nm">161</span>,
+      <span class="st">"version"</span>: <span class="st">"2c"</span>,
+      <span class="st">"community"</span>: <span class="st">"public"</span>,
+      <span class="st">"oids"</span>: {
+        <span class="st">"sysName"</span>:    <span class="st">"1.3.6.1.2.1.1.5.0"</span>,
+        <span class="st">"sysUpTime"</span>:  <span class="st">"1.3.6.1.2.1.1.3.0"</span>,
+        <span class="st">"ifInOctets"</span>: <span class="st">"1.3.6.1.2.1.2.2.1.10"</span>,
+        <span class="st">"ifOutOctets"</span>:<span class="st">"1.3.6.1.2.1.2.2.1.16"</span>
+      },
+      <span class="st">"interval"</span>: <span class="nm">5</span>
+    }
+  ]
+}</code></pre>
+      </div>
+      <div class="card">
+        <div class="callout ok"><span class="ct">好处</span>改设备或加 OID 只改 JSON，不动 Python 代码。<b>答辩讲这个点很加分。</b></div>
+        <h3 class="sub">产出物清单</h3>
+        <ul>
+          <li><code class="inline">snmp_collector.py</code> — 采集脚本</li>
+          <li><code class="inline">oid_config.json</code> — 设备与 OID 配置</li>
+          <li>抓包记录 — 证明全是 GET</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="block" id="s7">
+    <div class="sec-head">
+      <div class="sec-num">07</div>
+      <div><h2>学习路径建议（10-12 小时）</h2></div>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>时长</th><th>内容</th><th>优先级</th></tr></thead>
+          <tbody>
+            <tr><td>2h</td><td>SNMP 协议原理视频 + 记住核心 OID</td><td>⭐⭐⭐</td></tr>
+            <tr><td>1h</td><td>装 Net-SNMP，跑通 snmpget / snmpwalk</td><td>⭐⭐⭐</td></tr>
+            <tr><td>1h</td><td>装 snmpsim，<b>不等树莓派先跑起来</b></td><td>⭐⭐⭐</td></tr>
+            <tr><td>4h</td><td>pysnmp 7.x 官方文档 + 抄官方 examples 改</td><td>⭐⭐⭐</td></tr>
+            <tr><td>1h</td><td>写出 <code>snmp_collector.py</code> 雏形（读一个 OID）</td><td>⭐⭐⭐</td></tr>
+            <tr><td>1h</td><td>扩展成遍历所有网口 + 写 oid_config.json</td><td>⭐⭐</td></tr>
+            <tr><td>1h</td><td>Wireshark 抓包验证全是 GET</td><td>⭐⭐</td></tr>
+            <tr><td>1h</td><td>树莓派到货后配置 snmpd + 联调</td><td>⭐⭐⭐</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="block" id="s8">
+    <div class="sec-head">
+      <div class="sec-num">08</div>
+      <div><h2>答辩要点（你主讲的板块）</h2></div>
+    </div>
+    <div class="card">
+      <div class="timeline" style="margin-top:6px">
+        <div class="tl-item"><div class="day">第 10-20 分钟</div><h4>演示 snmpget 读 OID，讲 SNMP 原理</h4>
+          <p>讲清：为什么选 SNMP？（设备通用、标准协议、无侵入）；OID 和 MIB 的关系（数字地址 vs 人类可读的名字）。<br>
+          演示：现场 <code class="inline">snmpget -v 2c -c public &lt;IP&gt; .1.3.6.1.2.1.1.5.0</code>，屏幕打出设备名。</p>
+        </div>
+        <div class="tl-item"><div class="day">第 20-35 分钟</div><h4>现场排障</h4>
+          <p>故意改错团体名 → 演示排障过程 → 改回来 → 通。这个动作能展示"真懂"，比背稿强。</p>
+        </div>
+        <div class="tl-item"><div class="day">第 35-45 分钟</div><h4>切换备用数据源</h4>
+          <p>讲"双数据源设计"：主数据源 = 树莓派真实设备，备用 = snmpsim 模拟器。现场从真设备切到 snmpsim，看板数据不断流 ← <b>演示效果很好</b>。</p>
+        </div>
+        <div class="tl-item"><div class="day">第 45-55 分钟</div><h4>补充采集可靠性</h4>
+          <p>超时重试机制、异常捕获、采集间隔设计。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="pager">
+    <a href="member1.html">
+      <div class="pg-k">上一站</div>
+      <div class="pg-v">← 01 · 组长 算法与统筹</div>
+    </a>
+    <a class="next" href="member3.html">
+      <div class="pg-k">下一站</div>
+      <div class="pg-v">03 · 队员3 Flask 后端 →</div>
+    </a>
+  </div>
+
+</main>
+
+<footer>
+  <div class="fnav">
+    <a href="index.html">总览</a>
+    <a href="common.html">公共基础</a>
+    <a href="member1.html">组长·算法</a>
+    <a href="member2.html">SNMP采集</a>
+    <a href="member3.html">Flask后端</a>
+    <a href="member4.html">ECharts看板</a>
+    <a href="resources.html">资源速查</a>
+  </div>
+  <b>网巡卫士</b> · 基于 SNMP 的校园网络设备状态监测与异常预警系统<br>
+  省赛第 26 赛道（新一代信息技术）中职组 · 资料整合于 2026-10-14
+</footer>
+
+<button id="toTop" aria-label="回到顶部"><svg viewBox="0 0 24 24"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></button>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>资源速查 | 网巡卫士学习资料</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <div class="logo"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+      <div><b>网巡卫士</b><span>NetGuard Patrol</span></div>
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="打开菜单">☰</button>
+    <nav class="menu" id="menu">
+      <a href="index.html">总览</a>
+      <a href="common.html">公共基础</a>
+      <a href="member1.html">组长·算法</a>
+      <a href="member2.html">SNMP采集</a>
+      <a href="member3.html">Flask后端</a>
+      <a href="member4.html">ECharts看板</a>
+      <a href="resources.html">资源速查</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <div class="crumb">
+    <a href="index.html">总览</a>
+    <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+    <span>资源速查</span>
+  </div>
+
+  <div class="page-hero">
+    <div class="ph-top">
+      <div class="ph-ic" style="background:rgba(34,211,197,.15)"><svg viewBox="0 0 24 24" style="stroke:#6ee7dc"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></div>
+      <div>
+        <h1>官方资源速查 · B 站搜索关键词</h1>
+        <div class="ph-sub">All Links · One Page</div>
+      </div>
+    </div>
+    <p class="ph-desc">找不到具体视频时，直接把这些词粘到 B 站搜索框。所有链接一页汇总，按角色分区。</p>
+  </div>
+
+  <div class="card" style="margin-top:22px">
+    <h3><span class="ic"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></span>页面内搜索</h3>
+    <p style="margin-bottom:10px">输入关键词过滤下方链接卡片（按 <code class="inline">/</code> 快速聚焦，<code class="inline">Esc</code> 清空）。</p>
+    <input id="siteSearch" type="search" placeholder="例如：pysnmp、ECharts、SQLite、树莓派…"
+      style="width:100%;padding:12px 15px;border-radius:11px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);font-size:14px;font-family:inherit;outline:none">
+    <div id="searchResult" style="font-size:12.5px;color:var(--text-mute);margin-top:8px"></div>
+  </div>
+
+  <!-- 全员 -->
+  <section class="block" id="all">
+    <div class="sec-head">
+      <div class="sec-num">全员</div>
+      <div><h2>公共资源</h2><p>四个人都用得上的链接。</p></div>
+    </div>
+    <div class="card" data-search="python 官方 下载 离线 pip 安装 教程 snmp 协议 net-snmp 树莓派">
+      <div class="links">
+        <a class="link" href="https://www.python.org/downloads/" target="_blank" rel="noopener"><span class="badge b-official">官方</span><span class="t">Python 官方下载<small>选 3.11 或 3.12，别装 3.13</small></span></a>
+        <a class="link" href="https://docs.python.org/zh-cn/3/tutorial/" target="_blank" rel="noopener"><span class="badge b-official">官方</span><span class="t">Python 官方中文教程</span></a>
+        <a class="link" href="https://www.runoob.com/python3/python3-tutorial.html" target="_blank" rel="noopener"><span class="badge b-article">图文</span><span class="t">菜鸟教程 Python3</span></a>
+        <a class="link" href="https://liaoxuefeng.com/books/python/introduction/index.html" target="_blank" rel="noopener"><span class="badge b-article">图文</span><span class="t">廖雪峰 Python 教程</span></a>
+        <a class="link" href="https://calmops.com/network/snmp-protocol-network-management" target="_blank" rel="noopener"><span class="badge b-article">图文</span><span class="t">SNMP 完整图文指南（含 Python 代码）</span></a>
+        <a class="link" href="http://www.net-snmp.org/docs/" target="_blank" rel="noopener"><span class="badge b-official">官方</span><span class="t">Net-SNMP 官方文档</span></a>
+        <a class="link" href="https://www.raspberrypi.com/documentation/computers/getting-started.html" target="_blank" rel="noopener"><span class="badge b-official">官方</span><span class="t">树莓派官方文档</span></a>
+        <a class="link" href="https://shumeipai.nxez.com/" target="_blank" rel="noopener"><span class="badge b-article">中文站</span><span class="t">树莓派实验室</span></a>
+        <a class="link" href="https://www.wireshark.org/" target="_blank" rel="noopener"><span class="badge b-tool">工具</span><span class="t">Wireshark 官网</span></a>
+        <a class="link" href="https://code.visualstudio.com/" target="_blank" rel="noopener"><span class="badge b-tool">工具</span><span class="t">VS Code 官网</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 组长 -->
+  <section class="block" id="leader">
+    <div class="sec-head">
+      <div class="sec-num">01</div>
+      <div><h2>组长 · 算法与统筹</h2><p><span class="role-tag r-leader">EMA</span> <span class="role-tag r-leader">迟滞</span> <span class="role-tag r-leader">锁存</span></p></div>
+    </div>
+    <div class="card" data-search="ema ewma 指数加权移动 控制图 cusum 迟滞 施密特触发器 锁存 异常检测 静态阈值 动态基线">
+      <div class="links">
+        <a class="link" href="https://niobia.ai/learn/ewma-control-chart" target="_blank" rel="noopener"><span class="badge b-article">原理</span><span class="t">EMA 控制图原理<small>讲得最清楚，含公式推导</small></span></a>
+        <a class="link" href="https://www.authensor.com/learn/ewma-and-cusum-for-agent-monitoring" target="_blank" rel="noopener"><span class="badge b-article">对比</span><span class="t">EWMA vs CUSUM 对比（含参数怎么选）</span></a>
+        <a class="link" href="https://www.stats.bris.ac.uk/R/web/packages/shewhartr/vignettes/memory-based-charts.html" target="_blank" rel="noopener"><span class="badge b-article">统计</span><span class="t">EWMA 完整统计原理 + λ 选择表</span></a>
+        <a class="link" href="https://www.qualitydigest.com/node/38779/" target="_blank" rel="noopener"><span class="badge b-article">英文</span><span class="t">EWMA 控制图 vs 常规控制图对比</span></a>
+      </div>
+      <p style="margin-top:14px">B 站搜索：</p>
+      <p style="color:var(--text-dim);font-size:13.8px;margin-top:4px"><code class="inline">指数加权平均 讲解</code> · <code class="inline">EWMA 异常检测</code> · <code class="inline">移动平均 平滑 通俗</code> · <code class="inline">吴恩达 指数加权平均</code> · <code class="inline">迟滞比较器 原理</code> · <code class="inline">施密特触发器 通俗讲解</code> · <code class="inline">锁存器 原理</code> · <code class="inline">告警 抑制 冷却时间</code> · <code class="inline">异常检测 静态阈值 vs 动态基线</code></p>
+    </div>
+  </section>
+
+  <!-- 队员2 -->
+  <section class="block" id="m2">
+    <div class="sec-head">
+      <div class="sec-num">02</div>
+      <div><h2>队员2 · SNMP 采集</h2><p><span class="role-tag r-m2">SNMP</span> <span class="role-tag r-m2">pysnmp 7.x</span> <span class="role-tag r-m2">snmpsim</span></p></div>
+    </div>
+    <div class="card" data-search="snmp pysnmp snmpsim 树莓派 snmpd wireshark 抓包 oid mib">
+      <div class="links">
+        <a class="link" href="https://pysnmp.com/" target="_blank" rel="noopener"><span class="badge b-official">官网</span><span class="t">PySNMP 7 官网</span></a>
+        <a class="link" href="https://www.pysnmp.com/pysnmp/docs/pysnmp-hlapi-tutorial" target="_blank" rel="noopener"><span class="badge b-official">⭐ 首选</span><span class="t">pysnmp 7.x 高层 API 教程（asyncio）</span></a>
+        <a class="link" href="https://www.pysnmp.com/pysnmp/docs/" target="_blank" rel="noopener"><span class="badge b-official">文档</span><span class="t">PySNMP 库文档</span></a>
+        <a class="link" href="https://github.com/lextudio/pysnmp" target="_blank" rel="noopener"><span class="badge b-tool">GitHub</span><span class="t">PySNMP GitHub（examples 目录最重要）</span></a>
+        <a class="link" href="https://www.pysnmp.com/snmpsim/" target="_blank" rel="noopener"><span class="badge b-official">官方</span><span class="t">snmpsim 官方文档</span></a>
+        <a class="link" href="https://github.com/lextudio/snmpsim" target="_blank" rel="noopener"><span class="badge b-tool">GitHub</span><span class="t">snmpsim GitHub（含示例数据）</span></a>
+        <a class="link" href="https://snmp-monitoring.info/guides/python-polling" target="_blank" rel="noopener"><span class="badge b-article">实战</span><span class="t">实用 pysnmp 轮询指南（含 v3 和表格遍历）</span></a>
+        <a class="link" href="https://alotofservers.com/?p=8140" target="_blank" rel="noopener"><span class="badge b-article">英文</span><span class="t">树莓派 SNMP 配置完整指南</span></a>
+        <a class="link" href="https://www.pingtesti.com/en/blog/raspberry-pi-snmp-monitoring" target="_blank" rel="noopener"><span class="badge b-article">英文</span><span class="t">树莓派 SNMP 监控配置</span></a>
+        <a class="link" href="https://blog.gitcode.com/ac4a48a247ab2cd4cedaae7cd2b6e87c.html" target="_blank" rel="noopener"><span class="badge b-article">中文</span><span class="t">中文 PySNMP 实践指南</span></a>
+      </div>
+      <p style="margin-top:14px">B 站搜索：<code class="inline">SNMP协议 详解</code> · <code class="inline">SNMP 原理 通俗</code> · <code class="inline">网络管理 SNMP MIB OID</code> · <code class="inline">pysnmp 教程</code> · <code class="inline">snmpsim SNMP模拟器</code> · <code class="inline">Wireshark 抓包 入门</code> · <code class="inline">Wireshark 过滤 snmp</code> · <code class="inline">树莓派 snmpd 配置</code></p>
+    </div>
+  </section>
+
+  <!-- 队员3 -->
+  <section class="block" id="m3">
+    <div class="sec-head">
+      <div class="sec-num">03</div>
+      <div><h2>队员3 · Flask 后端</h2><p><span class="role-tag r-m3">Flask</span> <span class="role-tag r-m3">SQLite</span> <span class="role-tag r-m3">CSV</span></p></div>
+    </div>
+    <div class="card" data-search="flask 路由 json 接口 sqlite 数据库 csv 导出 python">
+      <div class="links">
+        <a class="link" href="https://flask.palletsprojects.com/zh-cn/stable/quickstart/" target="_blank" rel="noopener"><span class="badge b-official">⭐ 官方</span><span class="t">Flask 官方中文快速入门</span></a>
+        <a class="link" href="https://flask.palletsprojects.com/zh-cn/stable/tutorial/" target="_blank" rel="noopener"><span class="badge b-official">官方</span><span class="t">Flask 官方教程（完整博客应用）</span></a>
+        <a class="link" href="https://www.runoob.com/flask/flask-tutorial.html" target="_blank" rel="noopener"><span class="badge b-article">图文</span><span class="t">菜鸟教程 Flask</span></a>
+        <a class="link" href="https://dormousehole.readthedocs.io/" target="_blank" rel="noopener"><span class="badge b-article">中文</span><span class="t">Flask 中文文档（完整）</span></a>
+        <a class="link" href="https://www.sqlite.org/docs.html" target="_blank" rel="noopener"><span class="badge b-official">官方</span><span class="t">SQLite 官方文档</span></a>
+        <a class="link" href="https://www.runoob.com/sqlite/sqlite-tutorial.html" target="_blank" rel="noopener"><span class="badge b-article">中文</span><span class="t">SQLite 中文教程（菜鸟）</span></a>
+        <a class="link" href="https://docs.python.org/zh-cn/3/library/sqlite3.html" target="_blank" rel="noopener"><span class="badge b-official">官方</span><span class="t">Python sqlite3 模块官方文档</span></a>
+        <a class="link" href="https://docs.python.org/zh-cn/3/library/csv.html" target="_blank" rel="noopener"><span class="badge b-official">官方</span><span class="t">Python csv 模块文档</span></a>
+      </div>
+      <p style="margin-top:14px">B 站搜索：<code class="inline">Flask 入门 教程</code> · <code class="inline">Flask 快速上手</code> · <code class="inline">Flask RESTful API 开发</code> · <code class="inline">Python Web Flask 完整版</code> · <code class="inline">SQLite 数据库 教程</code> · <code class="inline">Python SQLite 增删改查</code></p>
+    </div>
+  </section>
+
+  <!-- 队员4 -->
+  <section class="block" id="m4">
+    <div class="sec-head">
+      <div class="sec-num">04</div>
+      <div><h2>队员4 · ECharts 看板</h2><p><span class="role-tag r-m4">ECharts</span> <span class="role-tag r-m4">Socket.IO</span></p></div>
+    </div>
+    <div class="card" data-search="echarts 图表 折线图 动态 实时 刷新 socketio websocket 前端 html javascript">
+      <div class="links">
+        <a class="link" href="https://echarts.apache.org/zh/index.html" target="_blank" rel="noopener"><span class="badge b-official">⭐ 官网</span><span class="t">Apache ECharts 官网（中文）</span></a>
+        <a class="link" href="https://echarts.apache.org/examples/zh/index.html" target="_blank" rel="noopener"><span class="badge b-official">⭐ 抄改首选</span><span class="t">ECharts 官方示例库</span></a>
+        <a class="link" href="https://echarts.apache.org/handbook/zh/get-started/" target="_blank" rel="noopener"><span class="badge b-official">官方</span><span class="t">ECharts 官方快速上手</span></a>
+        <a class="link" href="https://echarts.apache.org/zh/option.html" target="_blank" rel="noopener"><span class="badge b-official">手册</span><span class="t">ECharts 官方配置项手册</span></a>
+        <a class="link" href="https://echarts.apache.org/zh/download.html" target="_blank" rel="noopener"><span class="badge b-tool">下载</span><span class="t">ECharts 离线 JS 下载地址</span></a>
+        <a class="link" href="https://flask-socketio.readthedocs.io/" target="_blank" rel="noopener"><span class="badge b-official">官方</span><span class="t">Flask-SocketIO 官方文档</span></a>
+        <a class="link" href="https://learncode.com.tw/?p=2750/" target="_blank" rel="noopener"><span class="badge b-article">中文</span><span class="t">Flask-SocketIO 中文入门</span></a>
+        <a class="link" href="https://www.guance.com/learn/articles/flask-websockets" target="_blank" rel="noopener"><span class="badge b-article">指南</span><span class="t">Flask WebSockets 入门指南</span></a>
+        <a class="link" href="https://developer.mozilla.org/zh-CN/docs/Web" target="_blank" rel="noopener"><span class="badge b-official">权威</span><span class="t">MDN Web 文档（中文）</span></a>
+        <a class="link" href="https://zh.javascript.info/" target="_blank" rel="noopener"><span class="badge b-article">深入</span><span class="t">JS 现代教程（中文）</span></a>
+        <a class="link" href="https://cloud.baidu.com/article/5325371" target="_blank" rel="noopener"><span class="badge b-article">中文</span><span class="t">ECharts 中文入门文章</span></a>
+      </div>
+      <p style="margin-top:14px">B 站搜索：<code class="inline">ECharts 入门 教程</code> · <code class="inline">ECharts 数据可视化 完整版</code> · <code class="inline">ECharts 动态数据 实时刷新</code> · <code class="inline">Flask-SocketIO 实时推送</code> · <code class="inline">Socket.IO 前后端</code> · <code class="inline">HTML CSS 快速入门</code></p>
+    </div>
+  </section>
+
+  <div class="pager">
+    <a href="member4.html">
+      <div class="pg-k">上一站</div>
+      <div class="pg-v">← 04 · 队员4 ECharts 看板</div>
+    </a>
+    <a class="next" href="index.html">
+      <div class="pg-k">回到</div>
+      <div class="pg-v">总览 →</div>
+    </a>
+  </div>
+
+</main>
+
+<footer>
+  <div class="fnav">
+    <a href="index.html">总览</a>
+    <a href="common.html">公共基础</a>
+    <a href="member1.html">组长·算法</a>
+    <a href="member2.html">SNMP采集</a>
+    <a href="member3.html">Flask后端</a>
+    <a href="member4.html">ECharts看板</a>
+    <a href="resources.html">资源速查</a>
+  </div>
+  <b>网巡卫士</b> · 基于 SNMP 的校园网络设备状态监测与异常预警系统<br>
+  省赛第 26 赛道（新一代信息技术）中职组 · 资料整合于 2026-10-14
+</footer>
+
+<button id="toTop" aria-label="回到顶部"><svg viewBox="0 0 24 24"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></button>
+<script src="assets/app.js"></script>
+</body>
+</html>

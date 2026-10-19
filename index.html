@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>网巡卫士 · 学习资料总站</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <div class="logo">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <div>
+        <b>网巡卫士</b>
+        <span>NetGuard Patrol</span>
+      </div>
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="打开菜单">☰</button>
+    <nav class="menu" id="menu">
+      <a href="index.html">总览</a>
+      <a href="common.html">公共基础</a>
+      <a href="member1.html">组长·算法</a>
+      <a href="member2.html">SNMP采集</a>
+      <a href="member3.html">Flask后端</a>
+      <a href="member4.html">ECharts看板</a>
+      <a href="resources.html">资源速查</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="tag"><span class="dot"></span>省赛第 26 赛道 · 新一代信息技术 · 中职组</div>
+    <h1>基于 SNMP 的校园网络<br>设备状态监测与异常预警系统</h1>
+    <p class="lead">4 人团队 · 10 天周期 · 全套学习资料。首页看全局，点进各自页面只看自己该学的东西。</p>
+    <div class="meta">
+      <span class="chip">研发周期 <b>10 天</b></span>
+      <span class="chip">团队规模 <b>4 人</b></span>
+      <span class="chip">硬件成本 <b>¥300-350</b></span>
+      <span class="chip">技术栈 <b>SNMP · Python · Flask · ECharts</b></span>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="k">总学习时长</div><div class="v">28<small> 小时</small></div><div class="d">4 人并行 · 最重队员2</div></div>
+      <div class="stat"><div class="k">核心模块</div><div class="v">4<small> 个</small></div><div class="d">算法 / 采集 / 后端 / 看板</div></div>
+      <div class="stat"><div class="k">关键 OID</div><div class="v">6<small> 个</small></div><div class="d">记住这些就够用</div></div>
+      <div class="stat"><div class="k">答辩时长</div><div class="v">55<small> 分钟</small></div><div class="d">4 人分板块主讲</div></div>
+    </div>
+  </section>
+
+  <!-- ================= 角色入口 ================= -->
+  <section class="block" id="roles">
+    <div class="sec-head">
+      <div class="sec-num">入口</div>
+      <div>
+        <h2>选你的角色，进入专属学习页</h2>
+        <p>每个页面只列该角色需要学的内容、要看的资料和自查清单，互不干扰。</p>
+      </div>
+    </div>
+
+    <div class="roles">
+      <a class="role-card rc-leader" href="member1.html">
+        <div class="rc-top">
+          <div class="rc-ic"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M17 7h4v4"/></svg></div>
+          <div>
+            <div class="rc-name">组长 · 算法与统筹</div>
+            <div class="rc-sub">4-5 HOURS</div>
+          </div>
+        </div>
+        <p class="rc-desc">EMA 基线更新公式、迟滞判定逻辑、锁存机制。负责整体联调与答辩总控，<b>不需要学 pysnmp 细节</b>。</p>
+        <div class="rc-tags">
+          <span class="role-tag r-leader">EMA</span>
+          <span class="role-tag r-leader">迟滞</span>
+          <span class="role-tag r-leader">锁存</span>
+        </div>
+        <div class="rc-foot"><span>能指着代码解释每个参数</span><span class="go">进入学习<svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span></div>
+      </a>
+
+      <a class="role-card rc-m2" href="member2.html">
+        <div class="rc-top">
+          <div class="rc-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18"/></svg></div>
+          <div>
+            <div class="rc-name">队员2 · SNMP 采集</div>
+            <div class="rc-sub">10-12 HOURS · 最重</div>
+          </div>
+        </div>
+        <p class="rc-desc">SNMP 协议基础（GET/WALK/OID）、pysnmp 7.x 异步 API、树莓派 snmpd 配置。<b>工作量全组最大，要提前开工。</b></p>
+        <div class="rc-tags">
+          <span class="role-tag r-m2">SNMP</span>
+          <span class="role-tag r-m2">pysnmp 7.x</span>
+          <span class="role-tag r-m2">snmpsim</span>
+        </div>
+        <div class="rc-foot"><span>能独立读到一个 OID 的值</span><span class="go">进入学习<svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span></div>
+      </a>
+
+      <a class="role-card rc-m3" href="member3.html">
+        <div class="rc-top">
+          <div class="rc-ic"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg></div>
+          <div>
+            <div class="rc-name">队员3 · Flask 后端</div>
+            <div class="rc-sub">4-5 HOURS</div>
+          </div>
+        </div>
+        <p class="rc-desc">Flask 路由（GET 返回 JSON）、SQLite 表结构设计、CSV 导出。<b>SQLite 增删改查已学过，重点在 Flask 和表设计。</b></p>
+        <div class="rc-tags">
+          <span class="role-tag r-m3">Flask</span>
+          <span class="role-tag r-m3">SQLite</span>
+          <span class="role-tag r-m3">CSV 导出</span>
+        </div>
+        <div class="rc-foot"><span>能写一个返回 JSON 的接口</span><span class="go">进入学习<svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span></div>
+      </a>
+
+      <a class="role-card rc-m4" href="member4.html">
+        <div class="rc-top">
+          <div class="rc-ic"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></div>
+          <div>
+            <div class="rc-name">队员4 · ECharts 看板</div>
+            <div class="rc-sub">6-8 HOURS</div>
+          </div>
+        </div>
+        <p class="rc-desc">ECharts 动态更新（setInterval + setOption）、Flask-SocketIO 前端对接、全套参赛文档。</p>
+        <div class="rc-tags">
+          <span class="role-tag r-m4">ECharts</span>
+          <span class="role-tag r-m4">Socket.IO</span>
+          <span class="role-tag r-m4">参赛文档</span>
+        </div>
+        <div class="rc-foot"><span>能画出实时刷新的折线图</span><span class="go">进入学习<svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span></div>
+      </a>
+    </div>
+
+    <div class="grid g2" style="margin-top:16px">
+      <a class="role-card ph-common" href="common.html" style="text-decoration:none">
+        <div class="rc-top">
+          <div class="rc-ic" style="background:rgba(255,181,71,.15)"><svg viewBox="0 0 24 24" style="stroke:#ffd08a"><path d="M12 6.25C10.5 5 8.5 4.5 6.5 5V19c2-.5 4 0 5.5 1.25"/><path d="M12 6.25C13.5 5 15.5 4.5 17.5 5V19c-2-.5-4 0-5.5 1.25"/><path d="M12 6.25v13.5"/></svg></div>
+          <div>
+            <div class="rc-name">全组公共基础</div>
+            <div class="rc-sub">4 人必看</div>
+          </div>
+        </div>
+        <p class="rc-desc">离线包、Python 基础、网络与 SNMP 协议、树莓派、三层防御话术。这是全组的地基，答辩四个人都会被问到。</p>
+        <div class="rc-foot"><span>先看这个，再进各自页面</span><span class="go">进入学习<svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span></div>
+      </a>
+
+      <a class="role-card" href="resources.html" style="text-decoration:none">
+        <div class="rc-top">
+          <div class="rc-ic" style="background:rgba(34,211,197,.15);border-color:var(--line-strong)"><svg viewBox="0 0 24 24" style="stroke:#6ee7dc"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></div>
+          <div>
+            <div class="rc-name">资源速查</div>
+            <div class="rc-sub">ALL LINKS</div>
+          </div>
+        </div>
+        <p class="rc-desc">所有官方文档链接 + B 站搜索关键词，按角色分类，找不到视频时直接来这儿复制关键词。</p>
+        <div class="rc-foot"><span>一站式链接汇总</span><span class="go">进入学习<svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ================= 全局节奏 ================= -->
+  <section class="block" id="overview">
+    <div class="sec-head">
+      <div class="sec-num">总览</div>
+      <div>
+        <h2>项目结构与开工节奏</h2>
+        <p>先看清全貌，再按角色各取所需。</p>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 12l9 4 9-4"/><path d="M3 17l9 4 9-4"/></svg></span>文件夹结构</h3>
+        <ul>
+          <li><span class="role-tag r-all">全员</span> <b>00-全组公共基础</b> — 离线包、Python、SNMP、树莓派、三层防御话术</li>
+          <li><span class="role-tag r-leader">组长</span> <b>01-算法与统筹</b> — EMA 基线、迟滞、锁存、静态阈值对比（4-5h）</li>
+          <li><span class="role-tag r-m2">队员2</span> <b>02-SNMP采集</b> — SNMP 协议、pysnmp 7.x、snmpsim、snmpd（10-12h，最重）</li>
+          <li><span class="role-tag r-m3">队员3</span> <b>03-Flask后端</b> — Flask 路由、SQLite 设计、CSV 导出（4-5h）</li>
+          <li><span class="role-tag r-m4">队员4</span> <b>04-ECharts看板</b> — 动态更新、Flask-SocketIO、参赛文档（6-8h）</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>时间预算与目标</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>角色</th><th>预算</th><th>学到什么程度</th></tr></thead>
+            <tbody>
+              <tr><td><span class="role-tag r-leader">组长</span></td><td>4-5 小时</td><td>能指着代码解释每个参数</td></tr>
+              <tr><td><span class="role-tag r-m2">队员2</span></td><td><b>10-12 小时</b></td><td>能独立读到一个 OID 的值</td></tr>
+              <tr><td><span class="role-tag r-m3">队员3</span></td><td>4-5 小时</td><td>能写一个返回 JSON 的接口</td></tr>
+              <tr><td><span class="role-tag r-m4">队员4</span></td><td>6-8 小时</td><td>能画出实时刷新的折线图</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout warn"><span class="ct">⚠️ 队员2 工作量最大</span>建议提前开工。第 0 天就可以先用 snmpsim 模拟器开发，不用等树莓派到货。</div>
+      </div>
+    </div>
+
+    <h3 style="margin:30px 0 6px;font-size:17px">三条最关键的提醒</h3>
+    <div class="grid g3">
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 2v6"/><path d="M12 16v6"/><circle cx="12" cy="12" r="4"/></svg></span>赛场大概率无外网</h3>
+        <p>所有 pip 包和 JS 库必须提前下载成离线包。</p>
+<pre><code><span class="cm"># 下载离线包</span>
+pip download pysnmp snmpsim flask flask-socketio -d ./offline_packages</code></pre>
+      </div>
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg></span>pysnmp 必须用 7.x</h3>
+        <p>网上 90% 中文教程还是 4.x 老写法，直接抄会跑不起来。</p>
+        <p style="margin-top:8px">导入：<code class="inline">pysnmp.hlapi.v3arch.asyncio</code>，用 <code class="inline">await</code> 而不是 <code class="inline">next()</code>。</p>
+      </div>
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 19V5a1 1 0 011-1h14a1 1 0 011 1v14"/><path d="M8 15h8"/></svg></span>三层防御话术</h3>
+        <p>答辩命门，文档原话"逐字背"。</p>
+        <p style="margin-top:8px">第 7 天写稿，第 8 天模拟答辩录像回看。</p>
+      </div>
+    </div>
+
+    <h3 style="margin:34px 0 6px;font-size:17px">开工建议顺序</h3>
+    <div class="timeline">
+      <div class="tl-item"><div class="day">第 0 天 · 上午</div><h4>全员过公共基础</h4><p>先读 <b>公共基础</b>，把离线包和 SNMP 协议概念过一遍。</p></div>
+      <div class="tl-item"><div class="day">第 0 天</div><h4>队员2 立刻搭 snmpsim + 装 Net-SNMP</h4><p>这是全组的依赖，不等树莓派到货。</p></div>
+      <div class="tl-item"><div class="day">第 0-2 天</div><h4>队员4 下载 ECharts 离线 JS</h4><p>用假数据先把看板动起来。</p></div>
+      <div class="tl-item"><div class="day">第 0-2 天</div><h4>队员3 约好接口字段名并建库建表</h4><p>字段命名提前对齐，避免返工。</p></div>
+      <div class="tl-item"><div class="day">第 1-2 天</div><h4>组长集中突破算法三件套</h4><p>4-5 小时拿下，随后改 <code class="inline">baseline_detector.py</code>。</p></div>
+    </div>
+  </section>
+
+  <!-- ================= 数据流 ================= -->
+  <section class="block" id="flow">
+    <div class="sec-head">
+      <div class="sec-num">链路</div>
+      <div>
+        <h2>数据是怎么流动的</h2>
+        <p>面试/答辩会被问到"每一跳的格式是什么"，这张图先记住。</p>
+      </div>
+    </div>
+    <div class="flow">
+      <div class="node">树莓派<small>SNMP</small></div><span class="arrow">→</span>
+      <div class="node">采集脚本<small>队员2</small></div><span class="arrow">→</span>
+      <div class="node">detector算法<small>组长</small></div><span class="arrow">→</span>
+      <div class="node">SQLite<small>队员3</small></div><span class="arrow">→</span>
+      <div class="node">Flask API<small>队员3</small></div><span class="arrow">→</span>
+      <div class="node">看板<small>队员4</small></div>
+    </div>
+    <div class="grid g3" style="margin-top:16px">
+      <div class="card"><h3><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg></span>环节 1-3 · 采集与检测</h3><p>树莓派上跑 snmpd 当"真设备"，采集脚本按 5 秒间隔读 OID，算法模块吃采样序列做基线偏离检测。</p></div>
+      <div class="card"><h3><span class="ic"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></span>环节 4-5 · 存储与接口</h3><p>采样点和告警分别落进 <code class="inline">metrics</code> / <code class="inline">alerts</code> 两张表，Flask 暴露 REST 接口给前端。</p></div>
+      <div class="card"><h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></span>环节 6 · 展示</h3><p>ECharts 用轮询或 WebSocket 拿数据，实时刷新折线图并打告警标记。</p></div>
+    </div>
+  </section>
+
+  <div class="pager">
+    <a href="common.html">
+      <div class="pg-k">下一站</div>
+      <div class="pg-v">00 · 全组公共基础 →</div>
+    </a>
+    <a class="next" href="resources.html">
+      <div class="pg-k">快速跳转</div>
+      <div class="pg-v">资源速查总表 →</div>
+    </a>
+  </div>
+
+</main>
+
+<footer>
+  <div class="fnav">
+    <a href="index.html">总览</a>
+    <a href="common.html">公共基础</a>
+    <a href="member1.html">组长·算法</a>
+    <a href="member2.html">SNMP采集</a>
+    <a href="member3.html">Flask后端</a>
+    <a href="member4.html">ECharts看板</a>
+    <a href="resources.html">资源速查</a>
+  </div>
+  <b>网巡卫士</b> · 基于 SNMP 的校园网络设备状态监测与异常预警系统<br>
+  省赛第 26 赛道（新一代信息技术）中职组 · 资料整合于 2026-10-14
+</footer>
+
+<button id="toTop" aria-label="回到顶部">
+  <svg viewBox="0 0 24 24"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+</button>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

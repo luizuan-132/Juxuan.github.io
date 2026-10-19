@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>队员3 · Flask 后端 | 网巡卫士学习资料</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <div class="logo"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+      <div><b>网巡卫士</b><span>NetGuard Patrol</span></div>
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="打开菜单">☰</button>
+    <nav class="menu" id="menu">
+      <a href="index.html">总览</a>
+      <a href="common.html">公共基础</a>
+      <a href="member1.html">组长·算法</a>
+      <a href="member2.html">SNMP采集</a>
+      <a href="member3.html">Flask后端</a>
+      <a href="member4.html">ECharts看板</a>
+      <a href="resources.html">资源速查</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <div class="crumb">
+    <a href="index.html">总览</a>
+    <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+    <span>队员3 · Flask 后端</span>
+  </div>
+
+  <div class="page-hero ph-m3">
+    <div class="ph-top">
+      <div class="ph-ic"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg></div>
+      <div>
+        <h1>队员3 · Flask + SQLite 后端</h1>
+        <div class="ph-sub">4-5 Hours · Flask + SQLite + CSV</div>
+      </div>
+    </div>
+    <p class="ph-desc">SQLite 数据库设计；Flask API；CSV 导出；数据存储逻辑。学到什么程度：<b style="color:#fff">能写一个返回 JSON 的接口</b>。</p>
+    <div class="ph-meta">
+      <span class="chip">时间预算 <b>4-5 小时</b></span>
+      <span class="chip">产出 <b>database.py</b></span>
+      <span class="chip">产出 <b>api.py</b></span>
+      <span class="chip">产出 <b>SQLite 数据库 + CSV 导出</b></span>
+    </div>
+  </div>
+
+  <div class="callout"><span class="ct">📌 你的重点不同</span>SQLite 增删改查<b>已学过</b>，所以重点在 <b>Flask 路由</b> + <b>表结构设计</b>。你主讲：后台代码逻辑、数据库设计、数据流。</div>
+
+  <nav class="anchor-nav">
+    <a href="#s1">一、Flask 基础</a>
+    <a href="#s2">二、SQLite 表结构设计</a>
+    <a href="#s3">三、常用操作与踩坑</a>
+    <a href="#s4">四、数据流理解</a>
+    <a href="#s5">五、CSV 导出</a>
+    <a href="#s6">六、学习路径</a>
+    <a href="#s7">七、答辩要点</a>
+  </nav>
+
+  <!-- 1 -->
+  <section class="block" id="s1">
+    <div class="sec-head">
+      <div class="sec-num">01</div>
+      <div>
+        <h2>Flask 基础（2-3 小时，核心）</h2>
+        <p>项目就需要这几个东西，不用学全。</p>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+<pre><code><span class="kw">from</span> flask <span class="kw">import</span> Flask, jsonify, request, send_file
+<span class="kw">import</span> sqlite3
+
+app = <span class="fn">Flask</span>(__name__)
+
+<span class="cm"># 1) 返回 JSON 的 GET 接口 ← 文档要求的核心能力</span>
+<span class="fn">@app.route</span>(<span class="st">'/api/devices'</span>, methods=[<span class="st">'GET'</span>])
+<span class="kw">def</span> <span class="fn">get_devices</span>():
+    conn = sqlite3.<span class="fn">connect</span>(<span class="st">'netguard.db'</span>)
+    rows = conn.<span class="fn">execute</span>(<span class="st">'SELECT * FROM devices'</span>).<span class="fn">fetchall</span>()
+    conn.<span class="fn">close</span>()
+    <span class="kw">return</span> <span class="fn">jsonify</span>([{<span class="st">'id'</span>: r[<span class="nm">0</span>], <span class="st">'name'</span>: r[<span class="nm">1</span>], <span class="st">'ip'</span>: r[<span class="nm">2</span>]} <span class="kw">for</span> r <span class="kw">in</span> rows])
+
+<span class="cm"># 2) 带参数的接口</span>
+<span class="fn">@app.route</span>(<span class="st">'/api/metrics/&lt;int:device_id&gt;'</span>, methods=[<span class="st">'GET'</span>])
+<span class="kw">def</span> <span class="fn">get_metrics</span>(device_id):
+    limit = request.args.<span class="fn">get</span>(<span class="st">'limit'</span>, <span class="nm">100</span>, type=<span class="kw">int</span>)   <span class="cm"># 查询参数</span>
+    conn = sqlite3.<span class="fn">connect</span>(<span class="st">'netguard.db'</span>)
+    rows = conn.<span class="fn">execute</span>(
+        <span class="st">'SELECT ts, in_octets, out_octets FROM metrics WHERE device_id=? ORDER BY ts DESC LIMIT ?'</span>,
+        (device_id, limit)
+    ).<span class="fn">fetchall</span>()
+    conn.<span class="fn">close</span>()
+    <span class="kw">return</span> <span class="fn">jsonify</span>(rows)
+
+<span class="kw">if</span> __name__ == <span class="st">'__main__'</span>:
+    app.<span class="fn">run</span>(host=<span class="st">'0.0.0.0'</span>, port=<span class="nm">5000</span>, debug=<span class="kw">True</span>)</code></pre>
+      </div>
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></span>你要看的资料</h3>
+        <div class="links">
+          <a class="link" href="https://flask.palletsprojects.com/zh-cn/stable/quickstart/" target="_blank" rel="noopener"><span class="badge b-official">⭐ 官方</span><span class="t">Flask 官方中文快速入门</span></a>
+          <a class="link" href="https://flask.palletsprojects.com/zh-cn/stable/tutorial/" target="_blank" rel="noopener"><span class="badge b-official">官方</span><span class="t">Flask 官方教程（完整博客应用）</span></a>
+          <a class="link" href="https://www.runoob.com/flask/flask-tutorial.html" target="_blank" rel="noopener"><span class="badge b-article">图文</span><span class="t">菜鸟教程 Flask</span></a>
+          <a class="link" href="https://dormousehole.readthedocs.io/" target="_blank" rel="noopener"><span class="badge b-article">中文</span><span class="t">Flask 中文文档（完整）</span></a>
+        </div>
+        <p style="margin-top:14px">B 站搜索：<code class="inline">Flask 入门 教程</code> · <code class="inline">Flask 快速上手</code> · <code class="inline">Flask RESTful API 开发</code> · <code class="inline">Python Web Flask 完整版</code></p>
+        <h3 class="sub"><span class="ic"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>自查</h3>
+        <ul class="check-list">
+          <li><code class="inline">jsonify</code> 和 <code class="inline">json.dumps</code> 有什么区别？（jsonify 自动设 Content-Type 并支持 Flask 类型）</li>
+          <li><code class="inline">@app.route</code> 的 <code class="inline">methods</code> 参数不写默认是什么？（只允许 GET）</li>
+          <li>为什么 <code class="inline">host='0.0.0.0'</code>？（让同局域网其他机器能访问，不然只能 localhost）</li>
+          <li><code class="inline">debug=True</code> 生产环境为什么不能用？（会暴露源码、允许远程执行）</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="block" id="s2">
+    <div class="sec-head">
+      <div class="sec-num">02</div>
+      <div>
+        <h2>SQLite 数据库设计（1-1.5 小时）</h2>
+        <p>重点是<b style="color:#fff">「表结构设计」</b>——这是你要讲的板块。建议 3 张表。</p>
+      </div>
+    </div>
+
+    <div class="card">
+<pre><code><span class="cm">-- 1) 设备表</span>
+<span class="kw">CREATE TABLE IF NOT EXISTS</span> devices (
+    id          <span class="kw">INTEGER PRIMARY KEY AUTOINCREMENT</span>,
+    name        <span class="kw">TEXT NOT NULL</span>,
+    ip          <span class="kw">TEXT NOT NULL UNIQUE</span>,
+    community   <span class="kw">TEXT DEFAULT</span> <span class="st">'public'</span>,
+    created_at  <span class="kw">TIMESTAMP DEFAULT CURRENT_TIMESTAMP</span>
+);
+
+<span class="cm">-- 2) 指标数据表（核心，采样点都存这里）</span>
+<span class="kw">CREATE TABLE IF NOT EXISTS</span> metrics (
+    id          <span class="kw">INTEGER PRIMARY KEY AUTOINCREMENT</span>,
+    device_id   <span class="kw">INTEGER NOT NULL</span>,
+    ts          <span class="kw">TIMESTAMP DEFAULT CURRENT_TIMESTAMP</span>,
+    in_octets   <span class="kw">INTEGER DEFAULT</span> <span class="nm">0</span>,      <span class="cm">-- 累计入站字节</span>
+    out_octets  <span class="kw">INTEGER DEFAULT</span> <span class="nm">0</span>,      <span class="cm">-- 累计出站字节</span>
+    in_rate     <span class="kw">REAL DEFAULT</span> <span class="nm">0</span>,         <span class="cm">-- 算好的实时速率 (bps)</span>
+    out_rate    <span class="kw">REAL DEFAULT</span> <span class="nm">0</span>,
+    <span class="kw">FOREIGN KEY</span> (device_id) <span class="kw">REFERENCES</span> devices(id)
+);
+<span class="kw">CREATE INDEX IF NOT EXISTS</span> idx_metrics_ts <span class="kw">ON</span> metrics(device_id, ts);
+
+<span class="cm">-- 3) 告警记录表</span>
+<span class="kw">CREATE TABLE IF NOT EXISTS</span> alerts (
+    id          <span class="kw">INTEGER PRIMARY KEY AUTOINCREMENT</span>,
+    device_id   <span class="kw">INTEGER NOT NULL</span>,
+    ts          <span class="kw">TIMESTAMP DEFAULT CURRENT_TIMESTAMP</span>,
+    level       <span class="kw">TEXT</span>,                   <span class="cm">-- info / warning / critical</span>
+    metric      <span class="kw">TEXT</span>,                   <span class="cm">-- 哪个指标触发的</span>
+    baseline    <span class="kw">REAL</span>,                   <span class="cm">-- 当时的基线值</span>
+    actual      <span class="kw">REAL</span>,                   <span class="cm">-- 实际值</span>
+    deviation   <span class="kw">REAL</span>,                   <span class="cm">-- 偏离度</span>
+    message     <span class="kw">TEXT</span>,
+    <span class="kw">FOREIGN KEY</span> (device_id) <span class="kw">REFERENCES</span> devices(id)
+);</code></pre>
+      <div class="links" style="margin-top:12px">
+        <a class="link" href="https://www.sqlite.org/docs.html" target="_blank" rel="noopener"><span class="badge b-official">官方</span><span class="t">SQLite 官方文档</span></a>
+        <a class="link" href="https://www.runoob.com/sqlite/sqlite-tutorial.html" target="_blank" rel="noopener"><span class="badge b-article">中文</span><span class="t">SQLite 中文教程（菜鸟）</span></a>
+        <a class="link" href="https://docs.python.org/zh-cn/3/library/sqlite3.html" target="_blank" rel="noopener"><span class="badge b-official">官方</span><span class="t">Python sqlite3 模块官方文档</span></a>
+      </div>
+      <p style="margin-top:12px">B 站搜索：<code class="inline">SQLite 数据库 教程</code> · <code class="inline">Python SQLite 增删改查</code></p>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="block" id="s3">
+    <div class="sec-head">
+      <div class="sec-num">03</div>
+      <div>
+        <h2>常用操作 &amp; 必须注意的坑</h2>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/></svg></span>SQLite 常用操作</h3>
+<pre><code><span class="kw">import</span> sqlite3
+
+conn = sqlite3.<span class="fn">connect</span>(<span class="st">'netguard.db'</span>)
+conn.row_factory = sqlite3.Row          <span class="cm"># ← 让结果能按列名访问，强烈建议加</span>
+cur = conn.<span class="fn">cursor</span>()
+
+<span class="cm"># 插入</span>
+cur.<span class="fn">execute</span>(<span class="st">'INSERT INTO metrics (device_id, in_octets, in_rate) VALUES (?, ?, ?)'</span>,
+            (<span class="nm">1</span>, <span class="nm">1234567</span>, <span class="nm">98.5</span>))
+conn.<span class="fn">commit</span>()
+
+<span class="cm"># 查询最近的 100 条</span>
+rows = cur.<span class="fn">execute</span>(<span class="st">'SELECT * FROM metrics WHERE device_id=? ORDER BY ts DESC LIMIT 100'</span>, (<span class="nm">1</span>,)).<span class="fn">fetchall</span>()
+
+<span class="cm"># 聚合查询（看板可能要用）</span>
+stat = cur.<span class="fn">execute</span>(<span class="st">'SELECT MAX(in_rate), AVG(in_rate) FROM metrics WHERE device_id=?'</span>, (<span class="nm">1</span>,)).<span class="fn">fetchone</span>()
+
+conn.<span class="fn">close</span>()</code></pre>
+        <ul class="check-list" style="margin-top:12px">
+          <li>为什么用 SQLite 而不是 MySQL？（零配置、单文件、够用、赛场不用装服务）</li>
+          <li>为什么 <code class="inline">metrics</code> 表要建索引？（看板要按时间倒序查询，没索引数据一多就卡）</li>
+          <li>累计计数器（in_octets）和实时速率（in_rate）为什么都要存？</li>
+          <li>采样间隔 5 秒，一天大概产生多少条数据？（86400/5 = 17280 条/设备/天）</li>
+          <li>数据量大了怎么办？（定期归档旧数据 / 只保留最近 N 天）</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg></span>🚨 SQLite 多线程问题</h3>
+        <p>Flask 默认多线程处理请求，而 sqlite3 连接默认不能跨线程用。</p>
+<pre><code><span class="cm"># 方案1：每个请求新建连接（简单，推荐）</span>
+<span class="kw">def</span> <span class="fn">get_db</span>():
+    conn = sqlite3.<span class="fn">connect</span>(<span class="st">'netguard.db'</span>)
+    conn.row_factory = sqlite3.Row
+    <span class="kw">return</span> conn
+
+<span class="cm"># 方案2：连接时加 check_same_thread=False（要自己保证线程安全）</span>
+conn = sqlite3.<span class="fn">connect</span>(<span class="st">'netguard.db'</span>, check_same_thread=<span class="kw">False</span>)</code></pre>
+        <div class="callout danger" style="margin-top:14px"><span class="ct">如果采集线程和后端同时写数据库</span>会报 <code>database is locked</code>。应对：<br>
+          · 开启 WAL 模式：<code>conn.execute('PRAGMA journal_mode=WAL')</code> ← <b>推荐，能大幅减少锁冲突</b><br>
+          · 设置超时：<code>sqlite3.connect('netguard.db', timeout=10)</code>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="block" id="s4">
+    <div class="sec-head">
+      <div class="sec-num">04</div>
+      <div>
+        <h2>数据流理解（你要讲的板块）</h2>
+      </div>
+    </div>
+    <div class="flow">
+      <div class="node">树莓派<small>SNMP</small></div><span class="arrow">→</span>
+      <div class="node">采集脚本<small>队员2</small></div><span class="arrow">→</span>
+      <div class="node">detector算法<small>组长</small></div><span class="arrow">→</span>
+      <div class="node">SQLite<small>你</small></div><span class="arrow">→</span>
+      <div class="node">Flask API<small>你</small></div><span class="arrow">→</span>
+      <div class="node">看板<small>队员4</small></div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>你要能讲清楚</h3>
+      <ul class="check-list">
+        <li>数据从哪来到哪去，每一跳的格式是什么</li>
+        <li>为什么采集和 API 要分开成两个进程/模块</li>
+        <li>告警记录为什么要独立一张表（而不是只存原始数据）</li>
+      </ul>
+      <div class="callout"><span class="ct">告警记录也入库</span>算法 → 告警表 → API → 看板，这条链路你在答辩第 20-35 分钟要展示。</div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="block" id="s5">
+    <div class="sec-head">
+      <div class="sec-num">05</div>
+      <div>
+        <h2>CSV 导出功能（0.5 小时）</h2>
+        <p>这是文档要求的产出物之一。</p>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+<pre><code><span class="kw">import</span> csv, io
+<span class="kw">from</span> flask <span class="kw">import</span> Response
+
+<span class="fn">@app.route</span>(<span class="st">'/api/export/&lt;int:device_id&gt;'</span>)
+<span class="kw">def</span> <span class="fn">export_csv</span>(device_id):
+    conn = sqlite3.<span class="fn">connect</span>(<span class="st">'netguard.db'</span>)
+    rows = conn.<span class="fn">execute</span>(
+        <span class="st">'SELECT ts, in_rate, out_rate FROM metrics WHERE device_id=? ORDER BY ts'</span>,
+        (device_id,)
+    ).<span class="fn">fetchall</span>()
+    conn.<span class="fn">close</span>()
+
+    <span class="cm"># 方式1：内存生成 CSV 返回（不用落盘）</span>
+    output = io.<span class="fn">StringIO</span>()
+    writer = csv.<span class="fn">writer</span>(output)
+    writer.<span class="fn">writerow</span>([<span class="st">'时间'</span>, <span class="st">'入站速率'</span>, <span class="st">'出站速率'</span>])
+    writer.<span class="fn">writerows</span>(rows)
+    output.<span class="fn">seek</span>(<span class="nm">0</span>)
+
+    <span class="kw">return</span> <span class="fn">Response</span>(
+        <span class="st">'\ufeff'</span> + output.<span class="fn">getvalue</span>(),        <span class="cm"># \ufeff 是 BOM，防止 Excel 打开中文乱码</span>
+        mimetype=<span class="st">'text/csv'</span>,
+        headers={<span class="st">'Content-Disposition'</span>: <span class="st">f'attachment; filename=device_{device_id}.csv'</span>}
+    )</code></pre>
+        <div class="links" style="margin-top:12px">
+          <a class="link" href="https://docs.python.org/zh-cn/3/library/csv.html" target="_blank" rel="noopener"><span class="badge b-official">官方</span><span class="t">Python csv 模块文档</span></a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="callout warn"><span class="ct">⚠️ 坑：CSV 中文用 Excel 打开乱码</span>必须在开头加 <code>\ufeff</code>（UTF-8 BOM）。</div>
+        <h3 class="sub"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 10h8M8 14h5"/></svg></span>产出物清单</h3>
+        <ul>
+          <li><code class="inline">database.py</code> — 连接、建表、插入、查询封装</li>
+          <li><code class="inline">api.py</code> — 3-4 个接口</li>
+          <li>SQLite 数据库文件</li>
+          <li>CSV 导出功能</li>
+        </ul>
+        <div class="callout danger" style="margin-top:14px"><span class="ct">⚠️ 最容易扯皮的地方</span>接口返回的 JSON 字段名。<b>提前和队员4 约好</b>（统一用 <code>in_rate</code> 还是 <code>inRate</code>），不然后期改起来两个人一起返工。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="block" id="s6">
+    <div class="sec-head">
+      <div class="sec-num">06</div>
+      <div><h2>学习路径建议（4-5 小时）</h2></div>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>时长</th><th>内容</th><th>优先级</th></tr></thead>
+          <tbody>
+            <tr><td>2h</td><td>Flask 官方快速入门，跟着敲一遍，跑通"返回 JSON"的接口</td><td>⭐⭐⭐</td></tr>
+            <tr><td>1h</td><td>设计三张表（devices / metrics / alerts），用 SQLite 建好</td><td>⭐⭐⭐</td></tr>
+            <tr><td>1h</td><td>写 <code>database.py</code>（连接、建表、插入、查询封装）</td><td>⭐⭐⭐</td></tr>
+            <tr><td>0.5h</td><td>写 <code>api.py</code>（3-4 个接口）+ CSV 导出</td><td>⭐⭐</td></tr>
+            <tr><td>0.5h</td><td>和队员4 对接口格式（字段名要对齐！）</td><td>⭐⭐⭐</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="block" id="s7">
+    <div class="sec-head">
+      <div class="sec-num">07</div>
+      <div><h2>答辩要点（你主讲的板块）</h2></div>
+    </div>
+    <div class="card">
+      <div class="timeline" style="margin-top:6px">
+        <div class="tl-item"><div class="day">第 10-20 分钟</div><h4>讲数据存储</h4>
+          <p>展示三张表和它们的关系（设备 → 指标 → 告警）；讲索引设计（为什么建 <code class="inline">idx_metrics_ts</code>）；<b>现场演示数据持久化</b>：重启服务后数据还在 ← 这是文档要求的实操动作。</p></div>
+        <div class="tl-item"><div class="day">第 20-35 分钟</div><h4>监控告警生成</h4>
+          <p>展示告警是怎么入库的（算法 → 告警表 → API → 看板）。</p></div>
+        <div class="tl-item"><div class="day">第 35-45 分钟</div><h4>展示数据一致性</h4>
+          <p>演示真数据源和模拟数据源切换后，数据库里的记录保持连续。</p></div>
+        <div class="tl-item"><div class="day">第 45-55 分钟</div><h4>补充测试结论</h4>
+          <p>比如：插入 10000 条数据后查询耗时多少（证明索引有效）。</p></div>
+      </div>
+      <div class="callout ok" style="margin-top:14px"><span class="ct">第 7 天产出</span>需求说明书。</div>
+    </div>
+  </section>
+
+  <div class="pager">
+    <a href="member2.html">
+      <div class="pg-k">上一站</div>
+      <div class="pg-v">← 02 · 队员2 SNMP 采集</div>
+    </a>
+    <a class="next" href="member4.html">
+      <div class="pg-k">下一站</div>
+      <div class="pg-v">04 · 队员4 ECharts 看板 →</div>
+    </a>
+  </div>
+
+</main>
+
+<footer>
+  <div class="fnav">
+    <a href="index.html">总览</a>
+    <a href="common.html">公共基础</a>
+    <a href="member1.html">组长·算法</a>
+    <a href="member2.html">SNMP采集</a>
+    <a href="member3.html">Flask后端</a>
+    <a href="member4.html">ECharts看板</a>
+    <a href="resources.html">资源速查</a>
+  </div>
+  <b>网巡卫士</b> · 基于 SNMP 的校园网络设备状态监测与异常预警系统<br>
+  省赛第 26 赛道（新一代信息技术）中职组 · 资料整合于 2026-10-14
+</footer>
+
+<button id="toTop" aria-label="回到顶部"><svg viewBox="0 0 24 24"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></button>
+<script src="assets/app.js"></script>
+</body>
+</html>

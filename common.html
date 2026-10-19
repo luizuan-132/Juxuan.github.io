@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全组公共基础 | 网巡卫士学习资料</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <div class="logo"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+      <div><b>网巡卫士</b><span>NetGuard Patrol</span></div>
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="打开菜单">☰</button>
+    <nav class="menu" id="menu">
+      <a href="index.html">总览</a>
+      <a href="common.html">公共基础</a>
+      <a href="member1.html">组长·算法</a>
+      <a href="member2.html">SNMP采集</a>
+      <a href="member3.html">Flask后端</a>
+      <a href="member4.html">ECharts看板</a>
+      <a href="resources.html">资源速查</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <div class="crumb">
+    <a href="index.html">总览</a>
+    <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+    <span>全组公共基础</span>
+  </div>
+
+  <div class="page-hero ph-common">
+    <div class="ph-top">
+      <div class="ph-ic"><svg viewBox="0 0 24 24"><path d="M12 6.25C10.5 5 8.5 4.5 6.5 5V19c2-.5 4 0 5.5 1.25"/><path d="M12 6.25C13.5 5 15.5 4.5 17.5 5V19c-2-.5-4 0-5.5 1.25"/><path d="M12 6.25v13.5"/></svg></div>
+      <div>
+        <h1>00 · 全组公共基础</h1>
+        <div class="ph-sub">4 人必看 · 建议第 0 天上午过一遍</div>
+      </div>
+    </div>
+    <p class="ph-desc">这是全组的地基。答辩时四个人都会被问到，答不上来直接扣分。内容包含：环境与离线包、Python 基础、网络与 SNMP 协议、树莓派基础、三层防御话术。</p>
+    <div class="ph-meta">
+      <span class="chip">建议耗时 <b>半天</b></span>
+      <span class="chip">重点 <b>离线包 + SNMP 概念 + 话术</b></span>
+    </div>
+  </div>
+
+  <nav class="anchor-nav">
+    <a href="#s1">一、环境与离线包</a>
+    <a href="#s2">二、Python 基础</a>
+    <a href="#s3">三、网络与 SNMP 协议</a>
+    <a href="#s4">四、树莓派基础</a>
+    <a href="#s5">五、三层防御话术</a>
+  </nav>
+
+  <!-- 1 -->
+  <section class="block" id="s1">
+    <div class="sec-head">
+      <div class="sec-num">01</div>
+      <div>
+        <h2>环境与离线包（优先级最高，第 0 天就要做）</h2>
+      </div>
+    </div>
+    <div class="callout danger"><span class="ct">⚠️ 赛场大概率无外网</span>所有 pip 包必须提前下载成离线包。</div>
+    <div class="grid g2" style="margin-top:16px">
+      <div class="card">
+<pre><code><span class="cm"># 在有网的机器上执行，把所有依赖下到 offline_packages 目录</span>
+pip download pysnmp snmpsim flask flask-socketio -d ./offline_packages
+
+<span class="cm"># 到赛场/树莓派上离线安装</span>
+pip install --no-index --find-links=./offline_packages pysnmp snmpsim flask flask-socketio
+
+<span class="cm"># 建议锁定版本再下（和文档一致）</span>
+pip download <span class="st">"pysnmp==7.1.*"</span> <span class="st">"flask==3.*"</span> <span class="st">"flask-socketio==5.*"</span> snmpsim -d ./offline_packages</code></pre>
+      </div>
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></span>参考资料</h3>
+        <div class="links">
+          <a class="link" href="https://www.python.org/downloads/" target="_blank" rel="noopener"><span class="badge b-official">官方</span><span class="t">Python 官方下载<small>选 3.11 或 3.12，别装 3.13，pysnmp 生态兼容性更稳</small></span></a>
+          <a class="link" href="https://pip.pypa.io/en/stable/cli/pip_download/" target="_blank" rel="noopener"><span class="badge b-official">官方</span><span class="t">pip 离线安装官方说明</span></a>
+          <a class="link" href="https://code.visualstudio.com/" target="_blank" rel="noopener"><span class="badge b-tool">工具</span><span class="t">VS Code 官网</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="block" id="s2">
+    <div class="sec-head">
+      <div class="sec-num">02</div>
+      <div>
+        <h2>Python 基础（如果组里有人底子薄，先补这个）</h2>
+      </div>
+    </div>
+    <div class="grid g2">
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></span>教程</h3>
+        <div class="links">
+          <a class="link" href="https://docs.python.org/zh-cn/3/tutorial/" target="_blank" rel="noopener"><span class="badge b-official">官方</span><span class="t">Python 官方中文教程</span></a>
+          <a class="link" href="https://www.runoob.com/python3/python3-tutorial.html" target="_blank" rel="noopener"><span class="badge b-article">图文</span><span class="t">菜鸟教程 Python3</span></a>
+          <a class="link" href="https://liaoxuefeng.com/books/python/introduction/index.html" target="_blank" rel="noopener"><span class="badge b-article">图文</span><span class="t">廖雪峰 Python 教程<small>讲得口语化，适合中职生</small></span></a>
+        </div>
+        <p style="margin-top:12px">B 站搜索：<code class="inline">Python 零基础 入门 2024</code> · <code class="inline">Python 基础语法 完整版</code></p>
+      </div>
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/></svg></span>这个项目实际用到的知识点（不用全学）</h3>
+        <div class="tbl-wrap">
+          <table style="min-width:auto">
+            <thead><tr><th>知识点</th><th>用在哪</th></tr></thead>
+            <tbody>
+              <tr><td>字典 / 列表</td><td>OID 配置、数据组装</td></tr>
+              <tr><td><code>json</code> 模块</td><td>oid_config.json 读写</td></tr>
+              <tr><td><code>async/await</code></td><td>pysnmp 7.x 的异步 API（队员2 必须会）</td></tr>
+              <tr><td><code>sqlite3</code> 模块</td><td>队员3 的数据库操作</td></tr>
+              <tr><td>类与对象</td><td>各模块封装</td></tr>
+              <tr><td><code>pip</code> / 虚拟环境</td><td>离线包安装</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="block" id="s3">
+    <div class="sec-head">
+      <div class="sec-num">03</div>
+      <div>
+        <h2>网络与 SNMP 协议（4 人共同语言，必须都懂）</h2>
+        <p>这是全组的地基。答辩时四个人都会被问到，答不上来直接扣分。</p>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>必须搞懂的核心概念（自查清单）</h3>
+        <ul class="check-list">
+          <li>SNMP 是<b>管理者-代理</b>模型：NMS 发查询，设备的 agent（snmpd）回数据</li>
+          <li><b>OID</b> 是一串数字，像 <code class="inline">.1.3.6.1.2.1.1.5.0</code> 是设备主机名，本质是树形地址</li>
+          <li><b>MIB</b> 是 OID 的"字典"，把数字翻译成人话（如 <code class="inline">SNMPv2-MIB::sysName.0</code>）</li>
+          <li><b>GET</b> = 读一个值；<b>WALK</b> = 遍历一整棵子树；<b>GETBULK</b> = 批量高效读表</li>
+          <li><b>community（团体名）</b> 类似密码，默认 <code class="inline">public</code>；<b>SNMPv3</b> 才有真正的认证加密</li>
+          <li>常用 OID 记住几个：<code class="inline">1.3.6.1.2.1.1.3.0</code>（运行时长）、<code class="inline">1.3.6.1.2.1.2.2.1.10</code>（入站流量）、<code class="inline">...1.16</code>（出站流量）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></span>视频 / 教程</h3>
+        <p>B 站搜索关键词：<code class="inline">SNMP协议 详解</code> · <code class="inline">SNMP 网络管理 原理</code> · <code class="inline">网管协议 SNMP 入门</code></p>
+        <p style="margin-top:8px">推荐找时长 20-60 分钟的原理讲解课，重点看 <b>GET / WALK / OID / MIB</b> 这四块。</p>
+        <div class="links">
+          <a class="link" href="https://calmops.com/network/snmp-protocol-network-management" target="_blank" rel="noopener"><span class="badge b-article">图文</span><span class="t">SNMP 完整图文指南（含 Python 代码）</span></a>
+          <a class="link" href="https://snmp-monitoring.info/guides/python-polling" target="_blank" rel="noopener"><span class="badge b-article">实战</span><span class="t">SNMP Polling with Python 实战</span></a>
+          <a class="link" href="http://www.net-snmp.org/docs/" target="_blank" rel="noopener"><span class="badge b-official">官方</span><span class="t">Net-SNMP 官方文档</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 17l6-6-6-6"/><path d="M12 19h8"/></svg></span>命令行工具（现场演示会用到）</h3>
+<pre><code>sudo apt install snmp            <span class="cm"># Ubuntu / 树莓派装 Net-SNMP 工具</span>
+snmpget -v 2c -c public 192.168.1.10 .1.3.6.1.2.1.1.5.0      <span class="cm"># 读一个 OID</span>
+snmpwalk -v 2c -c public 192.168.1.10 .1.3.6.1.2.1.1        <span class="cm"># 走一整棵子树</span>
+snmpwalk -v 2c -c public 192.168.1.10 .1.3.6.1.2.1.2.2.1.10  <span class="cm"># 走所有网口入站流量</span></code></pre>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="block" id="s4">
+    <div class="sec-head">
+      <div class="sec-num">04</div>
+      <div>
+        <h2>树莓派基础（全员都要会一点，动手主要在队员2）</h2>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></span>视频 / 教程</h3>
+        <div class="links">
+          <a class="link" href="https://www.raspberrypi.com/documentation/computers/getting-started.html" target="_blank" rel="noopener"><span class="badge b-official">官方</span><span class="t">树莓派官方文档（中文）</span></a>
+          <a class="link" href="https://shumeipai.nxez.com/" target="_blank" rel="noopener"><span class="badge b-article">中文站</span><span class="t">树莓派实验室（国内中文站，教程多）</span></a>
+          <a class="link" href="https://www.bilibili.com/read/cv9226792/" target="_blank" rel="noopener"><span class="badge b-article">图文</span><span class="t">图文参考（含烧录+远程连接+换源）</span></a>
+          <a class="link" href="https://www.bilibili.com/read/cv10559106/" target="_blank" rel="noopener"><span class="badge b-article">图文</span><span class="t">图文参考 2</span></a>
+        </div>
+        <p style="margin-top:12px">B 站搜索：<code class="inline">树莓派4B 保姆级教程</code> · <code class="inline">树莓派 烧录系统 SSH</code> · <code class="inline">树莓派 入门 新手</code></p>
+      </div>
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 12h10M7 8h10M7 16h6"/></svg></span>要会的操作</h3>
+<pre><code><span class="cm"># 1. 烧录系统：用 Raspberry Pi Imager，高级设置里直接开 SSH + 配 WiFi + 设用户名密码</span>
+<span class="cm">#    （新版系统不再有默认 pi/raspberry 账户，必须自己设）</span>
+<span class="cm"># 2. 查 IP：路由器管理页 或 手机热点客户端列表</span>
+
+<span class="cm"># 3. SSH 登录</span>
+ssh 你的用户名@树莓派IP
+
+<span class="cm"># 4. 换国内源加速（清华源）</span>
+sudo nano /etc/apt/sources.list
+
+<span class="cm"># 5. 装 SNMP 服务端（要跑 snmpd 当"真设备"）</span>
+sudo apt update
+sudo apt install snmpd snmp -y</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="block" id="s5">
+    <div class="sec-head">
+      <div class="sec-num">05</div>
+      <div>
+        <h2>三层防御话术（答辩命门，全员背）</h2>
+      </div>
+    </div>
+    <div class="card">
+      <div class="callout danger"><span class="ct">文档原话</span>"三层防御话术逐字背，这是答辩的命门。"</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>层级</th><th>讲什么</th></tr></thead>
+          <tbody>
+            <tr><td><b>第一层</b></td><td><b>痛点 + 政策</b>：校园网络设备故障发现慢、人工巡检成本高；对应国家的网络安全管理政策要求</td></tr>
+            <tr><td><b>第二层</b></td><td><b>技术方案</b>：SNMP 采集 → EMA 基线偏离检测 → 实时 Web 看板告警，闭环</td></tr>
+            <tr><td><b>第三层</b></td><td><b>对比优势</b>：静态阈值会误报/漏报，基线偏离能自适应；成本仅 ¥300-350，远低于商用网管系统</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout ok" style="margin-top:14px"><span class="ct">准备方式</span>第 7 天写稿逐字背，第 8 天模拟答辩录像回看。</div>
+    </div>
+  </section>
+
+  <div class="pager">
+    <a href="index.html">
+      <div class="pg-k">上一站</div>
+      <div class="pg-v">← 总览</div>
+    </a>
+    <a class="next" href="member1.html">
+      <div class="pg-k">下一站</div>
+      <div class="pg-v">01 · 组长 算法与统筹 →</div>
+    </a>
+  </div>
+
+</main>
+
+<footer>
+  <div class="fnav">
+    <a href="index.html">总览</a>
+    <a href="common.html">公共基础</a>
+    <a href="member1.html">组长·算法</a>
+    <a href="member2.html">SNMP采集</a>
+    <a href="member3.html">Flask后端</a>
+    <a href="member4.html">ECharts看板</a>
+    <a href="resources.html">资源速查</a>
+  </div>
+  <b>网巡卫士</b> · 基于 SNMP 的校园网络设备状态监测与异常预警系统<br>
+  省赛第 26 赛道（新一代信息技术）中职组 · 资料整合于 2026-10-14
+</footer>
+
+<button id="toTop" aria-label="回到顶部"><svg viewBox="0 0 24 24"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></button>
+<script src="assets/app.js"></script>
+</body>
+</html>

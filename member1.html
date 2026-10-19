@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>组长 · 算法与统筹 | 网巡卫士学习资料</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <div class="logo"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+      <div><b>网巡卫士</b><span>NetGuard Patrol</span></div>
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="打开菜单">☰</button>
+    <nav class="menu" id="menu">
+      <a href="index.html">总览</a>
+      <a href="common.html">公共基础</a>
+      <a href="member1.html">组长·算法</a>
+      <a href="member2.html">SNMP采集</a>
+      <a href="member3.html">Flask后端</a>
+      <a href="member4.html">ECharts看板</a>
+      <a href="resources.html">资源速查</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <div class="crumb">
+    <a href="index.html">总览</a>
+    <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+    <span>组长 · 算法与统筹</span>
+  </div>
+
+  <div class="page-hero ph-leader">
+    <div class="ph-top">
+      <div class="ph-ic"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M17 7h4v4"/></svg></div>
+      <div>
+        <h1>组长 · 算法与统筹</h1>
+        <div class="ph-sub">4-5 Hours · EMA + Hysteresis + Latch</div>
+      </div>
+    </div>
+    <p class="ph-desc">把 <code class="inline">activity_baseline.py</code> 改成 <code class="inline">baseline_detector.py</code>，吃 SNMP 流量数据；整体联调；答辩总控。<b style="color:#fff">不需要学 pysnmp 细节。</b></p>
+    <div class="ph-meta">
+      <span class="chip">时间预算 <b>4-5 小时</b></span>
+      <span class="chip">目标 <b>能指着代码解释每个参数</b></span>
+      <span class="chip">产出 <b>baseline_detector.py</b></span>
+    </div>
+  </div>
+
+  <nav class="anchor-nav">
+    <a href="#s1">一、EMA 指数加权移动平均</a>
+    <a href="#s2">二、迟滞判定</a>
+    <a href="#s3">三、锁存机制</a>
+    <a href="#s4">四、静态阈值对比</a>
+    <a href="#s5">五、统筹与答辩</a>
+    <a href="#s6">六、学习路径</a>
+  </nav>
+
+  <!-- 1 -->
+  <section class="block" id="s1">
+    <div class="sec-head">
+      <div class="sec-num">01</div>
+      <div>
+        <h2>EMA 指数加权移动平均（最核心）</h2>
+        <p>EMA 就是你项目里"基线"的数学本体。公式只有一个：</p>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+<pre><code>Z_t = α · x_t + (1 - α) · Z_(t-1)</code></pre>
+        <ul style="margin-top:14px">
+          <li><code class="inline">x_t</code> = 当前这次采到的流量值</li>
+          <li><code class="inline">Z_t</code> = 更新后的基线（平滑值）</li>
+          <li><code class="inline">α</code> = 权重（0&lt;α&lt;1），决定"记性好不好"
+            <ul>
+              <li>α <b>小</b>（0.1-0.3）→ 记得久、平滑、不敏感，但<b>响应慢</b></li>
+              <li>α <b>大</b>（0.5-0.9）→ 反应快、敏感，但<b>容易被噪声带偏</b></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></span>你要看的资料</h3>
+        <div class="links">
+          <a class="link" href="https://niobia.ai/learn/ewma-control-chart" target="_blank" rel="noopener"><span class="badge b-article">原理</span><span class="t">EMA 控制图原理<small>讲得最清楚，含公式推导</small></span></a>
+          <a class="link" href="https://www.authensor.com/learn/ewma-and-cusum-for-agent-monitoring" target="_blank" rel="noopener"><span class="badge b-article">对比</span><span class="t">EWMA vs CUSUM 对比（含参数怎么选）</span></a>
+          <a class="link" href="https://www.stats.bris.ac.uk/R/web/packages/shewhartr/vignettes/memory-based-charts.html" target="_blank" rel="noopener"><span class="badge b-article">统计</span><span class="t">EWMA 完整统计原理 + λ 选择表</span></a>
+        </div>
+        <p style="margin-top:14px">B 站搜索：<code class="inline">指数加权平均 讲解</code> · <code class="inline">EWMA 异常检测</code> · <code class="inline">移动平均 平滑 通俗</code></p>
+        <p style="margin-top:6px">吴恩达深度学习里的指数加权平均（讲得最通俗，B站有搬运）。</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>自查：能不能回答</h3>
+      <ul class="check-list">
+        <li>为什么 α 越小，基线越"迟钝"但越抗噪？</li>
+        <li>基线一开始没有历史数据，<code class="inline">Z_0</code> 怎么初始化？（答：用前 N 个采样点的均值，或第一次采到的值）</li>
+        <li>采样间隔对 α 的等效"记忆长度"有什么影响？记忆长度约等于 <code class="inline">1/α</code> 个采样点</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="block" id="s2">
+    <div class="sec-head">
+      <div class="sec-num">02</div>
+      <div>
+        <h2>迟滞判定 Hysteresis（防止告警抖动）</h2>
+        <p>要解决的问题：流量在阈值线上下反复横跳时，如果直接比较就会疯狂误报。</p>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+<pre><code><span class="cm">// 伪代码：两个阈值，进去和出来用不同的线</span>
+<span class="kw">if</span> (当前值 &gt; 高阈值 UPPER):  进入告警状态
+<span class="kw">if</span> (当前值 &lt; 低阈值 LOWER):  退出告警状态
+<span class="cm">// 在 UPPER 和 LOWER 之间时，维持之前的状态不变</span></code></pre>
+        <p style="margin-top:12px">文档里提到的 <code class="inline">DROP_RATIO</code> / <code class="inline">RISE_RATIO</code> 就是这两个阈值的系数。</p>
+        <div class="callout"><span class="ct">本质</span>硬件里叫<b>施密特触发器</b>，软件里叫<b>迟滞</b>，本质是同一个思想。B 站搜 <code>施密特触发器</code> 有大量生动动画。</div>
+      </div>
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>自查</h3>
+        <ul class="check-list">
+          <li>为什么迟滞能消除抖动？画出流量曲线 + 两条阈值线，标出状态切换点</li>
+          <li>如果 UPPER 和 LOWER 挨得很近会怎样？（答：退化成单阈值，失去防抖作用）</li>
+          <li>现场调参时，把 <code class="inline">DROP_RATIO</code> 调大/调小分别会发生什么？（答辩要现场演示这个）</li>
+        </ul>
+        <p style="margin-top:14px">B 站搜索：<code class="inline">迟滞比较器 原理</code> · <code class="inline">施密特触发器 通俗讲解</code> · <code class="inline">阈值 抖动 消除</code></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="block" id="s3">
+    <div class="sec-head">
+      <div class="sec-num">03</div>
+      <div>
+        <h2>锁存机制 Latch（告警状态保持）</h2>
+        <p>要解决的问题：瞬时冲高又立刻回落，如果只看当前值就会"闪一下"就没了，看板和日志抓不住。</p>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+<pre><code><span class="cm">// 伪代码：一旦触发，锁定 N 个周期不释放</span>
+<span class="kw">if</span> (触发条件成立): latched = <span class="kw">true</span>; latch_countdown = N
+<span class="kw">if</span> (latched):
+    <span class="kw">if</span> (latch_countdown &gt; 0): latch_countdown--
+    <span class="kw">else</span>: latched = <span class="kw">false</span>    <span class="cm">// 冷却结束才能重新判定</span></code></pre>
+        <p style="margin-top:12px">硬件里叫 <b>SR 锁存器 / D 触发器</b>，软件里叫<b>告警锁存 / 冷却期（cooldown）</b>。工业监控里叫 <code class="inline">alarm latching</code> / <code class="inline">alarm suppression</code>。</p>
+      </div>
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>自查</h3>
+        <ul class="check-list">
+          <li>锁存和迟滞的区别是什么？（提示：迟滞管"阈值边界"，锁存管"时间持续"）</li>
+          <li>冷却期设太长会有什么后果？（答：漏报后续真实异常）</li>
+          <li>项目里锁存是为了让"看板上能看见告警"——这句话怎么理解？</li>
+        </ul>
+        <p style="margin-top:14px">B 站搜索：<code class="inline">锁存器 原理</code> · <code class="inline">SR锁存器 通俗讲解</code> · <code class="inline">告警 抑制 冷却时间</code></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="block" id="s4">
+    <div class="sec-head">
+      <div class="sec-num">04</div>
+      <div>
+        <h2>静态阈值 vs 基线偏离（你的对比实验）</h2>
+        <p>这是答辩第 35-45 分钟的展示重点，<b style="color:#fff">必须能讲清楚为什么基线法更好</b>。</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>维度</th><th>静态阈值</th><th>基线偏离（EMA+迟滞+锁存）</th></tr></thead>
+          <tbody>
+            <tr><td>阈值</td><td>人为定死，如"流量&gt;100Mbps 告警"</td><td>自动学习历史水平，自适应</td></tr>
+            <tr><td>白天/夜间差异</td><td>无法区分，夜间误报</td><td>基线自动跟随日常规律</td></tr>
+            <tr><td>网络扩容后</td><td>阈值失效，要人工重设</td><td>基线自动适应新水平</td></tr>
+            <tr><td>缓慢爬升型异常</td><td>察觉不到</td><td>累计偏离，能早期发现</td></tr>
+            <tr><td>成本</td><td>低（但误报代价高）</td><td>低（算法全免费）</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout"><span class="ct">对比实验图要画</span>同一段流量数据上，<b>静态阈值</b>和<b>基线偏离</b>两种方法的告警时点对比。</div>
+      <div class="links">
+        <a class="link" href="https://www.qualitydigest.com/node/38779/" target="_blank" rel="noopener"><span class="badge b-article">英文</span><span class="t">EWMA 控制图 vs 常规控制图对比<small>英文但权威</small></span></a>
+      </div>
+      <p style="margin-top:12px">B 站搜索：<code class="inline">异常检测 静态阈值 vs 动态基线</code> · <code class="inline">自适应阈值 异常检测</code></p>
+      <p style="margin-top:6px">如果组里想再加一层，可以了解一下 <b>CUSUM</b>（累计和，擅长抓缓慢漂移），上面 authensor 那篇有完整对比表。</p>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="block" id="s5">
+    <div class="sec-head">
+      <div class="sec-num">05</div>
+      <div>
+        <h2>组长额外要干的（统筹 + 答辩）</h2>
+        <p>代码迁移、重点改造点、答辩时间轴。</p>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg></span>代码迁移</h3>
+        <ul>
+          <li><b>核心动作</b>：把养老场景的 <code class="inline">activity_baseline.py</code> 拿过来，输入换成 SNMP 流量数据即可，<b>核心算法不动</b></li>
+          <li><b>重点改造点</b>：数据入口（原来是人体活动数据，现在换成 <code class="inline">ifInOctets</code> / <code class="inline">ifOutOctets</code> 的采样序列）</li>
+        </ul>
+        <div class="callout ok" style="margin-top:14px"><span class="ct">统筹工具</span>
+          10 天排期表见项目文档「四、开发顺序」章节。建议用一个共享表格（腾讯文档 / 飞书）跟踪每日进度。
+        </div>
+      </div>
+      <div class="card">
+        <h3><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>答辩时间轴</h3>
+        <div class="timeline" style="margin-top:6px">
+          <div class="tl-item"><div class="day">第 0-10 分钟</div><h4>讲项目设计</h4><p>痛点 + 政策 + 三层防御话术。</p></div>
+          <div class="tl-item"><div class="day">第 20-35 分钟</div><h4>现场调参</h4><p>改 <code class="inline">DROP_RATIO</code> / <code class="inline">RISE_RATIO</code>，展示告警触发变化 ← <b>加分项</b></p></div>
+          <div class="tl-item"><div class="day">第 35-45 分钟</div><h4>展示对比实验图</h4><p>静态阈值 vs 基线偏离。</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="block" id="s6">
+    <div class="sec-head">
+      <div class="sec-num">06</div>
+      <div>
+        <h2>学习路径建议（4-5 小时怎么分配）</h2>
+      </div>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>时长</th><th>内容</th></tr></thead>
+          <tbody>
+            <tr><td>1.5h</td><td>EMA 公式 + 亲手在纸上/Excel 里推演 10 个采样点，看基线怎么跟随</td></tr>
+            <tr><td>1h</td><td>迟滞（施密特触发器）动画视频 + 画出抖动消除示意图</td></tr>
+            <tr><td>1h</td><td>锁存 / 冷却期机制，理解它和迟滞的分工</td></tr>
+            <tr><td>1h</td><td>读自己手上 <code>activity_baseline.py</code> 的代码，逐个参数标注含义</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout ok" style="margin-top:14px"><span class="ct">关键目标</span>答辩时评委随便指一行代码问"这个参数干什么的"，你都能答上来。</div>
+    </div>
+  </section>
+
+  <div class="pager">
+    <a href="common.html">
+      <div class="pg-k">上一站</div>
+      <div class="pg-v">← 00 · 全组公共基础</div>
+    </a>
+    <a class="next" href="member2.html">
+      <div class="pg-k">下一站</div>
+      <div class="pg-v">02 · 队员2 SNMP 采集 →</div>
+    </a>
+  </div>
+
+</main>
+
+<footer>
+  <div class="fnav">
+    <a href="index.html">总览</a>
+    <a href="common.html">公共基础</a>
+    <a href="member1.html">组长·算法</a>
+    <a href="member2.html">SNMP采集</a>
+    <a href="member3.html">Flask后端</a>
+    <a href="member4.html">ECharts看板</a>
+    <a href="resources.html">资源速查</a>
+  </div>
+  <b>网巡卫士</b> · 基于 SNMP 的校园网络设备状态监测与异常预警系统<br>
+  省赛第 26 赛道（新一代信息技术）中职组 · 资料整合于 2026-10-14
+</footer>
+
+<button id="toTop" aria-label="回到顶部"><svg viewBox="0 0 24 24"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></button>
+<script src="assets/app.js"></script>
+</body>
+</html>
